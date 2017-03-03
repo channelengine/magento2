@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<integrations>
+   <integration name="ChannelEngine">
+       <email>support@channelengine.com</email>
+       <endpoint_url>http://dev.channelengine.local/magento/activate</endpoint_url>
+       <identity_link_url>http://dev.channelengine.local/magento/connect/4</identity_link_url>
+   </integration>
+</integrations>

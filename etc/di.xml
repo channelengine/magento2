@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- Sync the column "my_column" between the sales_order and sales_order_grid tables -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="ChannelEngine\Magento2\Api\OrderAttributeManagementInterface" type="ChannelEngine\Magento2\Model\Api\OrderAttributeManagement"/>
+	<virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
+	    <arguments>
+	        <argument name="columns">
+	        	<item name="ce_channel_name" xsi:type="string">sales_order.ce_channel_name</item>
+	            <item name="ce_channel_order_no" xsi:type="string">sales_order.ce_channel_order_no</item>
+	        </argument>
+	    </arguments>
+	</virtualType>
+</config>
