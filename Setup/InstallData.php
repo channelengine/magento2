@@ -7,8 +7,6 @@ use Magento\Framework\DB\Ddl\Table;
 use Magento\Integration\Model\ConfigBasedIntegrationManager;
 use Magento\Sales\Setup\SalesSetupFactory;
 use Magento\Sales\Model\Order;
-use Magento\Quote\Setup\QuoteSetupFactory;
-use Magento\Quote\Model\Quote;
 
 class InstallData implements InstallDataInterface
 {
@@ -31,6 +29,7 @@ class InstallData implements InstallDataInterface
     {
         $this->integrationManager = $integrationManager;
         $this->salesSetupFactory = $salesSetupFactory;
+
         $this->orderAttributes = [
             'ce_id' => [
                 'type' => Table::TYPE_INTEGER,
@@ -72,7 +71,7 @@ class InstallData implements InstallDataInterface
         $orderGridTable = $setup->getTable('sales_order_grid');
 
         // Install attributes
-        $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'quote_setup', 'setup' => $setup]);
+        $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $setup]);
 
         foreach ($this->orderAttributes as $attr => $config)
         {
