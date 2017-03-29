@@ -48,9 +48,14 @@ class ChannelEngineApi implements ChannelEngineApiInterface
                 $item->setOriginalCustomPrice($price);
             }
         }
+
+        $shippingPrice = $prices['shipping_price'];
+
+        $quote->setExtShippingInfo(serialize($shippingPrice));
+
         $quote->save();
 
-        return $quote->getId();
+        return true;
     }
 
     /**

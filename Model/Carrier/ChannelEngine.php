@@ -21,7 +21,7 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
      * @var string
      */
     private $_name = 'ChannelEngine';
-	
+
 	protected $_logger;
     /**
      * @var bool
@@ -65,24 +65,31 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
      */
     public function collectRates(RateRequest $request)
     {
-        /*if (!$this->getConfigFlag('active')) {
-            return false;
-        }
-        $shippingPrice = $this->getConfigData('price');
-        */
-
-        /** @var \Magento\Shipping\Model\Rate\Result $result */
         $result = $this->_rateResultFactory->create();
         $method = $this->_rateMethodFactory->create();
-		
-		$shippingPrice = 0.00;
 
-		$method->setCarrier($this->_code);
-		$method->setCarrierTitle($this->getConfigData('carrier_title'));
-		$method->setMethod($this->_code);
-		$method->setMethodTitle($this->getConfigData('method_title'));
+        $method->setCarrier($this->_code);
+        $method->setCarrierTitle($this->getConfigData('carrier_title'));
+        $method->setMethod($this->_code);
+        $method->setMethodTitle($this->getConfigData('method_title'));
+
+        // Get the quote from the RateRequest so we can parse extShippingInfo, which contains the shipping price
+        // as calculated by the external channel.
+        $quoteItems = $request->getAllItems();
+        if(count($quoteItems) == 0)
+        {
+            $shippingPrice = 0.00;
+        }
+        else
+        {
+            $quoteItem = $quoteItems[0];
+            $quote = $quoteItem->getQuote();
+            var_dump($quote->getExtShippingInfo());
+            $shippingPrice = unserialize($quote->getExtShippingInfo());
+        }
+
 		$method->setPrice($shippingPrice); // Set CE Shipping Cost here
-		$method->setCost($shippingPrice); // Set CE Shipping Cost here
+		$method->setCost(0);
 
 		$result->append($method);
 
