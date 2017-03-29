@@ -4,24 +4,20 @@
         <payment>
             <channelengine>
                 <active>1</active>
-                <title>ChannelEngine</title>
                 <order_status>pending_payment</order_status>
-                <instructions>Instruction.</instructions>
                 <payment_action>true</payment_action>
                 <model>ChannelEngine\Magento2\Model\Payment\ChannelEngine</model>
                 <group>offline</group>
             </channelengine>
         </payment>
         <carriers>
-            <carrier>
+            <channelengine>
                 <active>1</active>
                 <sallowspecific>0</sallowspecific>
                 <model>ChannelEngine\Magento2\Model\Carrier\ChannelEngine</model>
-                <name>ChannelEngine</name>
-                <price>0.00</price>
                 <method_title>ChannelEngine</method_title>
                 <carrier_title>ChannelEngine</carrier_title>
-            </carrier>
+            </channelengine>
         </carriers>
     </default>
 </config>
