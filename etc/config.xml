@@ -4,8 +4,6 @@
         <payment>
             <channelengine>
                 <active>1</active>
-                <order_status>pending_payment</order_status>
-                <payment_action>true</payment_action>
                 <model>ChannelEngine\Magento2\Model\Payment\ChannelEngine</model>
                 <group>offline</group>
             </channelengine>
