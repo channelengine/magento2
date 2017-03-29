@@ -20,7 +20,7 @@ class ChannelEngine extends AbstractMethod
      *
      * @var bool
      */
-    protected $_isOffline = true;
+     protected $_isOffline = true;
 
     /**
      * Hides the method from the checkout process
@@ -37,8 +37,6 @@ class ChannelEngine extends AbstractMethod
      */
     public function isActive($storeId = null)
     {
-        return true; //(bool)(int)$this->getConfigData('active', $storeId);
+        return true;
     }
-  
-
 }
