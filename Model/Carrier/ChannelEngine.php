@@ -7,6 +7,7 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
 use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Quote\Model\Quote\Address\RateRequest;
+use Magento\Authorization\Model\UserContextInterface;
 
 use Psr\Log\LoggerInterface;
 
@@ -32,10 +33,16 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
      * @var \Magento\Shipping\Model\Rate\ResultFactory
      */
     protected $_rateResultFactory;
+    
     /**
      * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
      */
     protected $_rateMethodFactory;
+
+    /**
+     * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
+     */
+    private $_userContext;
 
     /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
@@ -43,6 +50,7 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
      * @param \Psr\Log\LoggerInterface $logger
      * @param \Magento\Shipping\Model\Rate\ResultFactory $rateResultFactory
      * @param \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory $rateMethodFactory
+     * @param \Magento\Authorization\Model\UserContextInterface $userContext
      * @param array $data
      */
     public function __construct(
@@ -51,11 +59,15 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
         LoggerInterface $logger,
         ResultFactory $rateResultFactory,
         MethodFactory $rateMethodFactory,
+        UserContextInterface $userContext,
         array $data = []
     ) {
         $this->_rateResultFactory = $rateResultFactory;
         $this->_rateMethodFactory = $rateMethodFactory;
 		$this->_logger = $logger;
+
+        $this->_userContext = $userContext;
+
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
     }
 
@@ -65,6 +77,9 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
      */
     public function collectRates(RateRequest $request)
     {
+        $userType = $this->_userContext->getUserType();
+        if($userType != UserContextInterface::USER_TYPE_INTEGRATION && $userType != UserContextInterface::USER_TYPE_ADMIN) return false;
+
         $result = $this->_rateResultFactory->create();
         $method = $this->_rateMethodFactory->create();
 
