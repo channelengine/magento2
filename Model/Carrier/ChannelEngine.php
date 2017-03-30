@@ -84,7 +84,6 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
         {
             $quoteItem = $quoteItems[0];
             $quote = $quoteItem->getQuote();
-            var_dump($quote->getExtShippingInfo());
             $shippingPrice = unserialize($quote->getExtShippingInfo());
         }
 
