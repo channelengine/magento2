@@ -2,7 +2,7 @@
 <integrations>
    <integration name="ChannelEngine">
        <email>support@channelengine.com</email>
-       <endpoint_url>https://www.channelengine.local/magento/initialize</endpoint_url>
-       <identity_link_url>https://www.channelengine.local/magento/authenticate</identity_link_url>
+       <endpoint_url>https://www.channelengine.net/magento/initialize</endpoint_url>
+       <identity_link_url>https://www.channelengine.net/magento/authenticate</identity_link_url>
    </integration>
 </integrations>
