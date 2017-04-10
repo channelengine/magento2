@@ -6,6 +6,7 @@
                 <active>1</active>
                 <model>ChannelEngine\Magento2\Model\Payment\ChannelEngine</model>
                 <group>offline</group>
+                <title>ChannelEngine</title>
             </channelengine>
         </payment>
         <carriers>
