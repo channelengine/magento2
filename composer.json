@@ -11,11 +11,11 @@
     "minimum-stability": "stable",
     "require": {
         "php": "~5.5.0|~5.6.0|~7.0.0",
-        "magento/framework": "~100.1.*",
-        "magento/module-integration": "~100.1.*",
-        "magento/module-payment": "100.1.*",
-        "magento/module-checkout": "100.1.*",
-        "magento/module-sales": "100.1.*"
+        "magento/framework": "100.*",
+        "magento/module-integration": "100.*",
+        "magento/module-payment": "100.*",
+        "magento/module-checkout": "100.*",
+        "magento/module-sales": "100.*"
     },
     "autoload": {
         "files": [ "registration.php" ],
