@@ -8,7 +8,7 @@
             "email": "christiaan@channelengine.com"
         }
     ],
-    "version": "1.1.2",
+    "version": "1.1.3",
     "minimum-stability": "stable",
     "require": {
         "php": "~5.5.0|~5.6.0|~7.0.0",
@@ -21,7 +21,7 @@
     "autoload": {
         "files": [ "registration.php" ],
         "psr-4": {
-          "ChannelEngine\\": ""
+          "ChannelEngine\\Magento2\\": ""
         }
     }
 }
