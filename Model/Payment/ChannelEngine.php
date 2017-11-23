@@ -95,6 +95,6 @@ class ChannelEngine extends AbstractMethod
     public function isActive($storeId = null)
     {
         $userType = $this->_userContext->getUserType();
-        if($userType != UserContextInterface::USER_TYPE_INTEGRATION && $userType != UserContextInterface::USER_TYPE_ADMIN) return false;
+        return ($userType == UserContextInterface::USER_TYPE_INTEGRATION || $userType == UserContextInterface::USER_TYPE_ADMIN);
     }
 }
