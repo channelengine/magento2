@@ -8,15 +8,16 @@
             "email": "christiaan@channelengine.com"
         }
     ],
-    "version": "1.1.5",
+    "version": "1.2.0",
     "minimum-stability": "stable",
     "require": {
-        "php": "~5.5.0|~5.6.0|~7.0",
-        "magento/framework": "~100.0|~101.0",
-        "magento/module-integration": "~100.0|~101.0",
-        "magento/module-payment": "~100.0|~101.0",
-        "magento/module-checkout": "~100.0|~101.0",
-        "magento/module-sales": "~100.0|~101.0"
+        "php": ">=5.5.0",
+        "magento/framework": "*",
+        "magento/module-integration": "*",
+        "magento/module-payment": "*",
+        "magento/module-checkout": "*",
+        "magento/module-sales": "*",
+        "magento/module-catalog": "*"
     },
     "autoload": {
         "files": [ "registration.php" ],
