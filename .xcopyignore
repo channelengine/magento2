@@ -1,0 +1,9 @@
+\.git\
+composer.lock\
+.gitignore\
+.sublime-project\
+.sublime-workspace\
+README.md\
+.xcopyignore\
+create-module.bat\
+\export\
