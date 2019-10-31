@@ -11,6 +11,14 @@ class OrderObserver implements ObserverInterface
 
 	public function execute(\Magento\Framework\Event\Observer $observer)
 	{
+        $quote = $observer->getQuote();
+        $order = $observer->getOrder();
+        $ceId = $quote->getData('ce_id');
+
+        if($ceId)
+        {
+            // Disable emails
+            $order->setCanSendNewEmailFlag(false);
         }
 	}
 }
