@@ -6,6 +6,7 @@ use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Integration\Model\ConfigBasedIntegrationManager;
 use Magento\Sales\Setup\SalesSetupFactory;
+use Magento\Quote\Setup\QuoteSetupFactory;
 use Magento\Sales\Model\Order;
 use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
@@ -29,14 +30,19 @@ class UpgradeData implements UpgradeDataInterface
      * @var EavSetupFactory
      */
     protected $eavSetupFactory;
+    /**
+     * @var QuoteSetupFactory
+     */
+    private $quoteSetupFactory;
 
     /**
     * @param ConfigBasedIntegrationManager $integrationManager
     */
-    public function __construct(ConfigBasedIntegrationManager $integrationManager, SalesSetupFactory $salesSetupFactory, EavSetupFactory $eavSetupFactory)
+    public function __construct(ConfigBasedIntegrationManager $integrationManager, SalesSetupFactory $salesSetupFactory, QuoteSetupFactory $quoteSetupFactory, EavSetupFactory $eavSetupFactory)
     {
         $this->integrationManager = $integrationManager;
         $this->salesSetupFactory = $salesSetupFactory;
+        $this->quoteSetupFactory = $quoteSetupFactory;
         $this->eavSetupFactory = $eavSetupFactory;
 
         $this->orderAttributes = [
@@ -79,6 +85,7 @@ class UpgradeData implements UpgradeDataInterface
                 'label' => 'CE last product update'
             ]
         ];
+
     }
 
     /**
@@ -93,6 +100,7 @@ class UpgradeData implements UpgradeDataInterface
 
         // Install attributes
         $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $setup]);
+        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $setup]);
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
 
         foreach ($this->orderAttributes as $attr => $config)
@@ -105,6 +113,7 @@ class UpgradeData implements UpgradeDataInterface
             ]);
 
             $salesSetup->addAttribute(Order::ENTITY, $attr, $config);
+            $quoteSetup->addAttribute(self::QUOTE_ENTITY, $attr, $config);
         }
 
         foreach ($this->orderLineAttributes as $attr => $config)

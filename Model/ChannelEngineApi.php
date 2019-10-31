@@ -36,8 +36,11 @@ class ChannelEngineApi implements ChannelEngineApiInterface
         $quoteIdMask = $this->quoteIdMaskFactory->create()->load($cartId, 'masked_id');
         $quote = $this->quoteRepo->get($quoteIdMask->getQuoteId());
 
-        $cartItems = $quote->getAllItems();
+        $quote->setData('ce_id', $prices['ce_id']);
+        $quote->setData('ce_channel_order_no', $prices['ce_channel_order_no']);
+        $quote->setData('ce_channel_name', $prices['ce_channel_name']);
 
+        $cartItems = $quote->getAllItems();
         foreach($cartItems as $item) {
             if(isset($prices['items'][$item->getId()])) {
                 $attrs = $prices['items'][$item->getId()];
