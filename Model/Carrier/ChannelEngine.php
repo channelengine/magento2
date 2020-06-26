@@ -4,6 +4,7 @@ use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
 use Magento\Shipping\Model\Rate\ResultFactory;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory;
 use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Quote\Model\Quote\Address\RateRequest;
@@ -45,6 +46,11 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
     private $_userContext;
 
     /**
+     * @var SerializerInterface
+     */
+    private $_serializer;
+
+    /**
      * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
      * @param \Magento\Quote\Model\Quote\Address\RateResult\ErrorFactory $rateErrorFactory
      * @param \Psr\Log\LoggerInterface $logger
@@ -60,6 +66,7 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
         ResultFactory $rateResultFactory,
         MethodFactory $rateMethodFactory,
         UserContextInterface $userContext,
+        SerializerInterface $serializer,
         array $data = []
     ) {
         $this->_rateResultFactory = $rateResultFactory;
@@ -67,6 +74,8 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
 		$this->_logger = $logger;
 
         $this->_userContext = $userContext;
+
+        $this->_serializer = $serializer;
 
         parent::__construct($scopeConfig, $rateErrorFactory, $logger, $data);
     }
@@ -99,7 +108,7 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
         {
             $quoteItem = $quoteItems[0];
             $quote = $quoteItem->getQuote();
-            $shippingPrice = unserialize($quote->getExtShippingInfo());
+            $shippingPrice = $this->_serializer->unserialize($quote->getExtShippingInfo());
         }
 
 		$method->setPrice($shippingPrice); // Set CE Shipping Cost here

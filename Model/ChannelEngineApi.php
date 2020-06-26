@@ -4,6 +4,7 @@ use Exception;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteIdMaskFactory;
+use Magento\Framework\Serialize\SerializerInterface;
 use ChannelEngine\Magento2\Api\ChannelEngineApiInterface;
 
 class ChannelEngineApi implements ChannelEngineApiInterface
@@ -12,15 +13,25 @@ class ChannelEngineApi implements ChannelEngineApiInterface
     private $quoteRepo;
 
     /**
+     * @var SerializerInterface
+     */
+    private $_serializer;
+
+    /**
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepo
      * @param \Magento\Quote\Api\CartRepositoryInterface $quoteRepo
      * @param QuoteIdMaskFactory $quoteIdMaskFactory
      */
-    public function __construct(OrderRepositoryInterface $orderRepo, CartRepositoryInterface $quoteRepo, QuoteIdMaskFactory $quoteIdMaskFactory)
-    {
+    public function __construct(
+        OrderRepositoryInterface $orderRepo,
+        CartRepositoryInterface $quoteRepo,
+        QuoteIdMaskFactory $quoteIdMaskFactory,
+        SerializerInterface $serializer
+    ) {
         $this->orderRepo = $orderRepo;
         $this->quoteRepo = $quoteRepo;
         $this->quoteIdMaskFactory = $quoteIdMaskFactory;
+        $this->_serializer = $serializer;
     }
 
     /**
@@ -57,7 +68,7 @@ class ChannelEngineApi implements ChannelEngineApiInterface
 
         $shippingPrice = $prices['shipping_price'];
 
-        $quote->setExtShippingInfo(serialize($shippingPrice));
+        $quote->setExtShippingInfo($this->_serializer->serialize($shippingPrice));
 
         $quote->save();
 
