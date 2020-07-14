@@ -108,7 +108,7 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
         {
             $quoteItem = $quoteItems[0];
             $quote = $quoteItem->getQuote();
-            $shippingPrice = $this->_serializer->unserialize($quote->getExtShippingInfo());
+            $shippingPrice = (!empty($quote->getExtShippingInfo())) ? $this->_serializer->unserialize($quote->getExtShippingInfo()) : 0.00;
         }
 
 		$method->setPrice($shippingPrice); // Set CE Shipping Cost here
