@@ -16,6 +16,10 @@ class ChannelEngineApi implements ChannelEngineApiInterface
      * @var SerializerInterface
      */
     private $_serializer;
+    /**
+     * @var QuoteIdMaskFactory $quoteIdMaskFactory
+     */
+    private $quoteIdMaskFactory;
 
     /**
      * @param \Magento\Sales\Api\OrderRepositoryInterface $orderRepo
