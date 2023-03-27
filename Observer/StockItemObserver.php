@@ -5,7 +5,12 @@ use Magento\Catalog\Model\ProductRepository;
 
 class StockItemObserver implements ObserverInterface
 {
-	public function __construct(ProductRepository $productRepository)
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    public function __construct(ProductRepository $productRepository)
 	{
 		$this->productRepository = $productRepository;
 	}
