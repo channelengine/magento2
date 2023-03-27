@@ -1,8 +1,7 @@
-<?php namespace ChannelEngine\Magento2\Setup;
+<?php namespace ChannelEngine\Magento2\Setup\Patch\Data;
 
-use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Magento\Framework\Setup\UpgradeDataInterface;
+use Magento\Framework\Setup\DataPatchInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Integration\Model\ConfigBasedIntegrationManager;
 use Magento\Sales\Setup\SalesSetupFactory;
@@ -12,9 +11,14 @@ use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
 
-class UpgradeData implements UpgradeDataInterface
+class ChannelEngine implements DataPatchInterface
 {
     const QUOTE_ENTITY = 'quote';
+
+    /**
+    * @var ModuleDataSetupInterface
+    */
+    private $setup;
 
     /**
     * @var ConfigBasedIntegrationManager
@@ -50,8 +54,9 @@ class UpgradeData implements UpgradeDataInterface
     /**
     * @param ConfigBasedIntegrationManager $integrationManager
     */
-    public function __construct(ConfigBasedIntegrationManager $integrationManager, SalesSetupFactory $salesSetupFactory, QuoteSetupFactory $quoteSetupFactory, EavSetupFactory $eavSetupFactory)
+    public function __construct(ModuleDataSetupInterface $setup, ConfigBasedIntegrationManager $integrationManager, SalesSetupFactory $salesSetupFactory, QuoteSetupFactory $quoteSetupFactory, EavSetupFactory $eavSetupFactory)
     {
+        $this->setup = $setup;
         $this->integrationManager = $integrationManager;
         $this->salesSetupFactory = $salesSetupFactory;
         $this->quoteSetupFactory = $quoteSetupFactory;
@@ -103,7 +108,7 @@ class UpgradeData implements UpgradeDataInterface
     /**
     * {@inheritdoc}
     */
-    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public function apply()
     {
         $setup->startSetup();
 
