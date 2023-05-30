@@ -1,7 +1,7 @@
 <?php namespace ChannelEngine\Magento2\Setup\Patch\Data;
 
 use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Magento\Framework\Setup\DataPatchInterface;
+use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Integration\Model\ConfigBasedIntegrationManager;
 use Magento\Sales\Setup\SalesSetupFactory;
@@ -110,15 +110,15 @@ class ChannelEngine implements DataPatchInterface
     */
     public function apply()
     {
-        $setup->startSetup();
+        $this->setup->startSetup();
 
-        $conn = $setup->getConnection();
-        $orderGridTable = $setup->getTable('sales_order_grid');
+        $conn = $this->setup->getConnection();
+        $orderGridTable = $this->setup->getTable('sales_order_grid');
 
         // Install attributes
-        $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $setup]);
-        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $setup]);
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+        $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $this->setup]);
+        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
 
         foreach ($this->orderAttributes as $attr => $config)
         {
@@ -146,6 +146,22 @@ class ChannelEngine implements DataPatchInterface
         // Install integrations
         $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
 
-        $setup->endSetup();
+        $this->setup->endSetup();
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getAliases()
+    {
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDependencies()
+    {
+        return [];
     }
 }
