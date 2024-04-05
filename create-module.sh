@@ -4,4 +4,4 @@ mkdir -p ./export
 # Remove existing zip
 rm -f ./export/channelengine-magento2.zip
 # Zip all non-hidden files
-zip -r ./export/channelengine-magento2.zip . -x ".*"
+zip -r ./export/channelengine-magento2.zip . -x ".*" -x ".bat" -x ".sh"
