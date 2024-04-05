@@ -11,8 +11,7 @@
     "version": "1.3.0",
     "minimum-stability": "stable",
     "require": {
-        "magento/framework": "2.0.0",
-        "magento/module-integration": "2.0.0"
+        "magento/framework": ">=101.0.0"
     },
     "autoload": {
         "files": [ "registration.php" ],
