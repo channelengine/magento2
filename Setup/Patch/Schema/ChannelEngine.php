@@ -13,16 +13,16 @@ use Magento\Eav\Setup\EavSetupFactory;
 
 class ChannelEngine implements SchemaPatchInterface
 {
-    const QUOTE_ENTITY = 'quote';
+    private const QUOTE_ENTITY = 'quote';
 
     /**
-    * @var ModuleDataSetupInterface
-    */
+     * @var ModuleDataSetupInterface
+     */
     private $setup;
 
     /**
-    * @var ConfigBasedIntegrationManager
-    */
+     * @var ConfigBasedIntegrationManager
+     */
     private $integrationManager;
 
     /**
@@ -52,10 +52,19 @@ class ChannelEngine implements SchemaPatchInterface
     private $productAttributes;
 
     /**
-    * @param ConfigBasedIntegrationManager $integrationManager
-    */
-    public function __construct(ModuleDataSetupInterface $setup, ConfigBasedIntegrationManager $integrationManager, SalesSetupFactory $salesSetupFactory, QuoteSetupFactory $quoteSetupFactory, EavSetupFactory $eavSetupFactory)
-    {
+     * @param ModuleDataSetupInterface $setup
+     * @param ConfigBasedIntegrationManager $integrationManager
+     * @param SalesSetupFactory $salesSetupFactory
+     * @param QuoteSetupFactory $quoteSetupFactory
+     * @param EavSetupFactory $eavSetupFactory
+     */
+    public function __construct(
+        ModuleDataSetupInterface $setup,
+        ConfigBasedIntegrationManager $integrationManager,
+        SalesSetupFactory $salesSetupFactory,
+        QuoteSetupFactory $quoteSetupFactory,
+        EavSetupFactory $eavSetupFactory
+    ) {
         $this->setup = $setup;
         $this->integrationManager = $integrationManager;
         $this->salesSetupFactory = $salesSetupFactory;
@@ -102,12 +111,11 @@ class ChannelEngine implements SchemaPatchInterface
                 'label' => 'CE last product update'
             ]
         ];
-
     }
 
     /**
-    * {@inheritdoc}
-    */
+     * @inheritdoc
+     */
     public function apply()
     {
         $this->setup->startSetup();
@@ -120,8 +128,7 @@ class ChannelEngine implements SchemaPatchInterface
         $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
 
-        foreach ($this->orderAttributes as $attr => $config)
-        {
+        foreach ($this->orderAttributes as $attr => $config) {
             $conn->addColumn($orderGridTable, $attr, [
                 'type' => $config['type'],
                 'length' => 255,
@@ -133,13 +140,11 @@ class ChannelEngine implements SchemaPatchInterface
             $quoteSetup->addAttribute(self::QUOTE_ENTITY, $attr, $config);
         }
 
-        foreach ($this->orderLineAttributes as $attr => $config)
-        {
+        foreach ($this->orderLineAttributes as $attr => $config) {
             $salesSetup->addAttribute('order_item', $attr, $config);
         }
 
-        foreach ($this->productAttributes as $attr => $config)
-        {
+        foreach ($this->productAttributes as $attr => $config) {
             $eavSetup->addAttribute(Product::ENTITY, $attr, $config);
         }
 
@@ -150,7 +155,7 @@ class ChannelEngine implements SchemaPatchInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getAliases()
     {
@@ -158,7 +163,7 @@ class ChannelEngine implements SchemaPatchInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function getDependencies()
     {
