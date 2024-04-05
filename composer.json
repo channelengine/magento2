@@ -3,7 +3,7 @@
     "description": "ChannelEngine Magento2",
     "type": "magento2-module",
     "authors": [
-        {           
+        {
             "name": "Christiaan de Ridder",
             "email": "christiaan@channelengine.com"
         }
