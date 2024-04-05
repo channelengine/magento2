@@ -1,7 +1,7 @@
-<?php namespace ChannelEngine\Magento2\Setup\Patch\Data;
+<?php namespace ChannelEngine\Magento2\Setup\Patch\Schema;
 
 use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Magento\Framework\Setup\Patch\DataPatchInterface;
+use Magento\Framework\Setup\Patch\SchemaPatchInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Integration\Model\ConfigBasedIntegrationManager;
 use Magento\Sales\Setup\SalesSetupFactory;
@@ -11,7 +11,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
 
-class ChannelEngine implements DataPatchInterface
+class ChannelEngine implements SchemaPatchInterface
 {
     const QUOTE_ENTITY = 'quote';
 
@@ -148,7 +148,7 @@ class ChannelEngine implements DataPatchInterface
 
         $this->setup->endSetup();
     }
-    
+
     /**
      * {@inheritdoc}
      */
