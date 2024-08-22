@@ -11,23 +11,23 @@ class StockItemObserver implements ObserverInterface
     private $productRepository;
 
     public function __construct(ProductRepository $productRepository)
-	{
-		$this->productRepository = $productRepository;
-	}
+    {
+        $this->productRepository = $productRepository;
+    }
 
-	public function execute(\Magento\Framework\Event\Observer $observer)
-	{
-		$stockItem = $observer->getItem();
-		$productId = $stockItem->getProductId();
+    public function execute(\Magento\Framework\Event\Observer $observer)
+    {
+        $stockItem = $observer->getItem();
+        $productId = $stockItem->getProductId();
         $product = $this->productRepository->getById($productId);
         $date = date('Y-m-d H:i:s');
-		$attr = 'ce_updated_at';
+        $attr = 'ce_updated_at';
 
-		// Set both: https://magento.stackexchange.com/a/229280
+        // Set both: https://magento.stackexchange.com/a/229280
         $product->setData($attr, $date);
-		$product->setCustomAttribute($attr, $date);
+        $product->setCustomAttribute($attr, $date);
 
-		// Save only the attribute, to prevent cyclic events (when already performing a product save)
-		$product->getResource()->saveAttribute($product, $attr);
-	}
+        // Save only the attribute, to prevent cyclic events (when already performing a product save)
+        $product->getResource()->saveAttribute($product, $attr);
+    }
 }

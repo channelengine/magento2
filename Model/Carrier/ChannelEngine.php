@@ -24,7 +24,7 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
      */
     private $_name = 'ChannelEngine';
 
-	protected $_logger;
+    protected $_logger;
     /**
      * @var bool
      */
@@ -71,7 +71,7 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
     ) {
         $this->_rateResultFactory = $rateResultFactory;
         $this->_rateMethodFactory = $rateMethodFactory;
-		$this->_logger = $logger;
+        $this->_logger = $logger;
 
         $this->_userContext = $userContext;
 
@@ -111,10 +111,10 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
             $shippingPrice = (!empty($quote->getExtShippingInfo())) ? $this->_serializer->unserialize($quote->getExtShippingInfo()) : 0.00;
         }
 
-		$method->setPrice($shippingPrice); // Set CE Shipping Cost here
-		$method->setCost(0);
+        $method->setPrice($shippingPrice); // Set CE Shipping Cost here
+        $method->setCost(0);
 
-		$result->append($method);
+        $result->append($method);
 
         return $result;
     }

@@ -1,8 +1,7 @@
-<?php namespace ChannelEngine\Magento2\Setup;
+<?php namespace ChannelEngine\Magento2\Setup\Patch\Schema;
 
-use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Magento\Framework\Setup\UpgradeDataInterface;
+use Magento\Framework\Setup\Patch\SchemaPatchInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Integration\Model\ConfigBasedIntegrationManager;
 use Magento\Sales\Setup\SalesSetupFactory;
@@ -12,13 +11,18 @@ use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
 
-class UpgradeData implements UpgradeDataInterface
+class ChannelEngine implements SchemaPatchInterface
 {
-    const QUOTE_ENTITY = 'quote';
+    private const QUOTE_ENTITY = 'quote';
 
     /**
-    * @var ConfigBasedIntegrationManager
-    */
+     * @var ModuleDataSetupInterface
+     */
+    private $setup;
+
+    /**
+     * @var ConfigBasedIntegrationManager
+     */
     private $integrationManager;
 
     /**
@@ -48,10 +52,20 @@ class UpgradeData implements UpgradeDataInterface
     private $productAttributes;
 
     /**
-    * @param ConfigBasedIntegrationManager $integrationManager
-    */
-    public function __construct(ConfigBasedIntegrationManager $integrationManager, SalesSetupFactory $salesSetupFactory, QuoteSetupFactory $quoteSetupFactory, EavSetupFactory $eavSetupFactory)
-    {
+     * @param ModuleDataSetupInterface $setup
+     * @param ConfigBasedIntegrationManager $integrationManager
+     * @param SalesSetupFactory $salesSetupFactory
+     * @param QuoteSetupFactory $quoteSetupFactory
+     * @param EavSetupFactory $eavSetupFactory
+     */
+    public function __construct(
+        ModuleDataSetupInterface $setup,
+        ConfigBasedIntegrationManager $integrationManager,
+        SalesSetupFactory $salesSetupFactory,
+        QuoteSetupFactory $quoteSetupFactory,
+        EavSetupFactory $eavSetupFactory
+    ) {
+        $this->setup = $setup;
         $this->integrationManager = $integrationManager;
         $this->salesSetupFactory = $salesSetupFactory;
         $this->quoteSetupFactory = $quoteSetupFactory;
@@ -97,26 +111,24 @@ class UpgradeData implements UpgradeDataInterface
                 'label' => 'CE last product update'
             ]
         ];
-
     }
 
     /**
-    * {@inheritdoc}
-    */
-    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+     * @inheritdoc
+     */
+    public function apply()
     {
-        $setup->startSetup();
+        $this->setup->startSetup();
 
-        $conn = $setup->getConnection();
-        $orderGridTable = $setup->getTable('sales_order_grid');
+        $conn = $this->setup->getConnection();
+        $orderGridTable = $this->setup->getTable('sales_order_grid');
 
         // Install attributes
-        $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $setup]);
-        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $setup]);
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+        $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $this->setup]);
+        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
 
-        foreach ($this->orderAttributes as $attr => $config)
-        {
+        foreach ($this->orderAttributes as $attr => $config) {
             $conn->addColumn($orderGridTable, $attr, [
                 'type' => $config['type'],
                 'length' => 255,
@@ -128,19 +140,33 @@ class UpgradeData implements UpgradeDataInterface
             $quoteSetup->addAttribute(self::QUOTE_ENTITY, $attr, $config);
         }
 
-        foreach ($this->orderLineAttributes as $attr => $config)
-        {
+        foreach ($this->orderLineAttributes as $attr => $config) {
             $salesSetup->addAttribute('order_item', $attr, $config);
         }
 
-        foreach ($this->productAttributes as $attr => $config)
-        {
+        foreach ($this->productAttributes as $attr => $config) {
             $eavSetup->addAttribute(Product::ENTITY, $attr, $config);
         }
 
         // Install integrations
         $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
 
-        $setup->endSetup();
+        $this->setup->endSetup();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAliases()
+    {
+        return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function getDependencies()
+    {
+        return [];
     }
 }

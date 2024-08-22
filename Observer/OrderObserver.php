@@ -4,13 +4,13 @@ use Magento\Framework\Event\ObserverInterface;
 
 class OrderObserver implements ObserverInterface
 {
-	public function __construct()
-	{
-		
-	}
+    public function __construct()
+    {
+        
+    }
 
-	public function execute(\Magento\Framework\Event\Observer $observer)
-	{
+    public function execute(\Magento\Framework\Event\Observer $observer)
+    {
         $quote = $observer->getQuote();
         $order = $observer->getOrder();
         $ceId = $quote->getData('ce_id');
@@ -20,5 +20,5 @@ class OrderObserver implements ObserverInterface
             // Disable emails
             $order->setCanSendNewEmailFlag(false);
         }
-	}
+    }
 }

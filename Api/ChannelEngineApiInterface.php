@@ -12,13 +12,13 @@ interface ChannelEngineApiInterface
      */
     public function setQuotePrices($cartId, $prices = null);
 
-	/**
-	 * Updates the specified order with the specified CE attributes.
-	 *
-	 * @api
-	 * @param int $orderId
-	 * @param mixed $attributes
-	 * @return boolean
-	 */
-	public function setOrderAttributes($orderId, $attributes = null);
+    /**
+     * Updates the specified order with the specified CE attributes.
+     *
+     * @api
+     * @param int $orderId
+     * @param mixed $attributes
+     * @return boolean
+     */
+    public function setOrderAttributes($orderId, $attributes = null);
 }
