@@ -3,7 +3,7 @@
     <route url="/V1/guest-carts/:cartId/channelengine" method="POST">
         <service class="ChannelEngine\Magento2\Api\ChannelEngineApiInterface" method="setQuotePrices" />
         <resources>
-            <resource ref="self" />
+            <resource ref="ChannelEngine_Magento2::modify_quote_prices" />
         </resources>
     </route>
     <route url="/V1/orders/:orderId/channelengine" method="POST">

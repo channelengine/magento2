@@ -1,0 +1,9 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="ChannelEngine_Magento2::modify_quote_prices" title="Modify Quote Prices" />
+            </resource>
+        </resources>
+    </acl>
+</config>
