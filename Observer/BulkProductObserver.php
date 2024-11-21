@@ -32,14 +32,18 @@ class BulkProductObserver implements ObserverInterface
 
     public function execute(Observer $observer)
     {
-        $products = $observer->getEvent()->getBunch();
-        $skus = $this->getSkusFromProducts($products);
-        $productIds = $this->getProductIds($skus);
-        $storeId = $this->storeManager->getStore()->getId();
+        try {
+            $products = $observer->getEvent()->getBunch();
+            $skus = $this->getSkusFromProducts($products);
+            $productIds = $this->getProductIds($skus);
+            $storeId = $this->storeManager->getStore()->getId();
 
-        $this->updateCeAttribute($productIds, $storeId);
-        
-        $this->logger->info('Updated ce_updated_at field for the following product ids:' . json_encode($productIds));
+            $this->updateCeAttribute($productIds, $storeId);
+            
+            $this->logger->info('Updated ce_updated_at field for the following product ids:' . json_encode($productIds));
+        } catch (\Exception $e) {
+            $this->logger->error('Updating ce_updated_at field was unsuccessful', ['exception' => $e]);
+        }
     }
 
     private function getSkusFromProducts(array $products)
