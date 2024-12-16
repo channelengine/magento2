@@ -118,15 +118,15 @@ class ChannelEngine implements SchemaPatchInterface
      */
     public function apply()
     {
-        // $this->setup->startSetup();
+        $this->setup->startSetup();
 
-        // $conn = $this->setup->getConnection();
-        // $orderGridTable = $this->setup->getTable('sales_order_grid');
+        $conn = $this->setup->getConnection();
+        $orderGridTable = $this->setup->getTable('sales_order_grid');
 
-        // // Install attributes
-        // $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $this->setup]);
-        // $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
-        // $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
+        // Install attributes
+        $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $this->setup]);
+        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
 
         // foreach ($this->orderAttributes as $attr => $config) {
         //     $conn->addColumn($orderGridTable, $attr, [
@@ -148,10 +148,10 @@ class ChannelEngine implements SchemaPatchInterface
         //     $eavSetup->addAttribute(Product::ENTITY, $attr, $config);
         // }
 
-        // // Install integrations
-        // $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
+        // Install integrations
+        $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
 
-        // $this->setup->endSetup();
+        $this->setup->endSetup();
     }
 
     /**
