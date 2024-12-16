@@ -145,7 +145,7 @@ class ChannelEngine implements SchemaPatchInterface
         // }
 
         foreach ($this->productAttributes as $attr => $config) {
-            $eavSetup->addAttribute(Product::ENTITY, $attr, $config);
+            $eavSetup->addAttribute("product", $attr, $config);
         }
 
         // Install integrations
