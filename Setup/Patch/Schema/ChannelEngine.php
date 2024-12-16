@@ -137,7 +137,7 @@ class ChannelEngine implements SchemaPatchInterface
             ]);
 
             $salesSetup->addAttribute(Order::ENTITY, $attr, $config);
-            // $quoteSetup->addAttribute("quote", $attr, $config);
+            $quoteSetup->addAttribute("quote", $attr, $config);
         }
 
         // foreach ($this->orderLineAttributes as $attr => $config) {
