@@ -128,25 +128,25 @@ class ChannelEngine implements SchemaPatchInterface
         $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
 
-        // foreach ($this->orderAttributes as $attr => $config) {
-        //     $conn->addColumn($orderGridTable, $attr, [
-        //         'type' => $config['type'],
-        //         'length' => 255,
-        //         'nullable' => true,
-        //         'comment' => $config['label']
-        //     ]);
+        foreach ($this->orderAttributes as $attr => $config) {
+            $conn->addColumn($orderGridTable, $attr, [
+                'type' => $config['type'],
+                'length' => 255,
+                'nullable' => true,
+                'comment' => $config['label']
+            ]);
 
         //     $salesSetup->addAttribute(Order::ENTITY, $attr, $config);
         //     $quoteSetup->addAttribute("quote", $attr, $config);
-        // }
+        }
 
         // foreach ($this->orderLineAttributes as $attr => $config) {
         //     $salesSetup->addAttribute('sales_order_item', $attr, $config);
         // }
 
-        foreach ($this->productAttributes as $attr => $config) {
-            $eavSetup->addAttribute("catalog_product", $attr, $config);
-        }
+        // foreach ($this->productAttributes as $attr => $config) {
+        //     $eavSetup->addAttribute("catalog_product", $attr, $config);
+        // }
 
         // Install integrations
         $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
