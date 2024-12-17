@@ -155,20 +155,21 @@ class ChannelEngine implements SchemaPatchInterface
         }
 
         try {
-            $select = $conn->select()->from('eav_entity_type');
+            // $select = $conn->select()->from('eav_entity_type');
 
-            $result = $conn->fetchAll($select);
+            // $result = $conn->fetchAll($select);
 
-            if (!empty($result)) {
-                $this->logger->info('eav_entity_type Data:', $result);
-            } else {
-                $this->logger->info('No data found in entity_type_code');
-            }
+            // if (!empty($result)) {
+            //     $this->logger->info('eav_entity_type Data:', $result);
+            // } else {
+            //     $this->logger->info('No data found in entity_type_code');
+            // }
 
             // $entityTypeId = $this->eavConfig->getEntityType(\Magento\Catalog\Model\Product::ENTITY)->getEntityTypeId();
 
+            $productEntityTable = $this->setup->getTable('catalog_product_entity');
             foreach ($this->productAttributes as $attr => $config) {
-                $eavSetup->addAttribute(4, $attr, $config);
+                $conn->addColumn($productEntityTable, $attr, $config);
             }
         } catch (\Exception $e) {
             $this->logger->error('Updating product was unsuccessful', ['exception' => $e]);
