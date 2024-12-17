@@ -149,7 +149,7 @@ class ChannelEngine implements SchemaPatchInterface
             $salesSetup->addAttribute('order_item', $attr, $config);
         }
 
-        $entityTypeId = $this->eavConfig->getEntityType('catalog_product')->getEntityTypeId();
+        $entityTypeId = $this->eavConfig->getEntityType(\Magento\Catalog\Model\Product::ENTITY)->getEntityTypeId();
 
         foreach ($this->productAttributes as $attr => $config) {
             $eavSetup->addAttribute($entityTypeId, $attr, $config);
