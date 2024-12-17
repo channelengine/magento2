@@ -9,15 +9,15 @@ use Magento\Eav\Setup\EavSetupFactory;
 
 class ChannelEngine implements DataPatchInterface
 {
-    private $moduleDataSetup;
+    private $setup;
     protected $eavSetupFactory;
     private $productAttributes;
 
     public function __construct(
-        ModuleDataSetupInterface $moduleDataSetup,
+        ModuleDataSetupInterface $setup,
         EavSetupFactory $eavSetupFactory
     ) {
-        $this->moduleDataSetup = $moduleDataSetup;
+        $this->setup = $setup;
         $this->eavSetupFactory = $eavSetupFactory;
 
         $this->productAttributes = [
