@@ -5,6 +5,7 @@ namespace ChannelEngine\Magento2\Setup\Patch\Data;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Eav\Setup\EavSetupFactory;
 
 class ChannelEngine implements DataPatchInterface
 {
