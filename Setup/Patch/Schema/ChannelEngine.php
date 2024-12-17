@@ -153,10 +153,34 @@ class ChannelEngine implements SchemaPatchInterface
         foreach ($this->orderLineAttributes as $attr => $config) {
             $salesSetup->addAttribute('order_item', $attr, $config);
         }
+
+        $productTypes = implode(',', [Type::TYPE_SIMPLE, Type::TYPE_VIRTUAL]);
         
-        foreach ($this->productAttributes as $attr => $config) {
-            $eavSetup->addAttribute(4, $attr, $config); 
-        }
+        // foreach ($this->productAttributes as $attr => $config) {
+        //     $eavSetup->addAttribute(4, $attr, $config); 
+        // }
+
+        $eavSetup->addAttribute(Product::ENTITY, 'sample_text_attribute', [
+            'type' => 'text',
+            'backend' => '',
+            'frontend' => '',
+            'label' => 'Sample Text Attribute',
+            'input' => 'text',
+            'class' => '',
+            'source' => '',
+            'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+            'visible' => true,
+            'required' => true,
+            'user_defined' => false,
+            'default' => '',
+            'searchable' => false,
+            'filterable' => false,
+            'comparable' => false,
+            'visible_on_front' => false,
+            'used_in_product_listing' => true,
+            'unique' => false,
+            'apply_to' => $productTypes
+        ]);
         
         // Install integrations
         $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
