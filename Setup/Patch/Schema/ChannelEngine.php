@@ -52,6 +52,8 @@ class ChannelEngine implements SchemaPatchInterface
      */
     private $productAttributes;
 
+    private $eavConfig;
+
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ConfigBasedIntegrationManager $integrationManager
@@ -72,6 +74,7 @@ class ChannelEngine implements SchemaPatchInterface
         $this->salesSetupFactory = $salesSetupFactory;
         $this->quoteSetupFactory = $quoteSetupFactory;
         $this->eavSetupFactory = $eavSetupFactory;
+        $this->eavConfig = $eavConfig;
 
         $this->orderAttributes = [
             'ce_id' => [
