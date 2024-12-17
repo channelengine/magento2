@@ -11,6 +11,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Eav\Model\Config;
+use Psr\Log\LoggerInterface;
 
 class ChannelEngine implements SchemaPatchInterface
 {
