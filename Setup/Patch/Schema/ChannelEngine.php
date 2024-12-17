@@ -101,13 +101,13 @@ class ChannelEngine implements SchemaPatchInterface
         ];
         $this->productAttributes = [
             'ce_updated_at' => [
-                'type' => Table::TYPE_DATETIME,
+                'type' => 'datetime',
                 'visible' => false,
                 'input' => 'date',
                 'required' => false,
                 'user_defined' => false,
                 'default' => '2019-01-01 00:00:00',
-                'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'global' => 1,
                 'label' => 'CE last product update'
             ]
         ];
@@ -145,7 +145,7 @@ class ChannelEngine implements SchemaPatchInterface
         }
 
         foreach ($this->productAttributes as $attr => $config) {
-            $eavSetup->addAttribute(Product::ENTITY, $attr, $config);
+            $eavSetup->addAttribute('catalog_product', $attr, $config);
         }
 
         // Install integrations
