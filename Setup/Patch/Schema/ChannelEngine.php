@@ -10,6 +10,7 @@ use Magento\Sales\Model\Order;
 use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Eav\Model\Config;
 
 class ChannelEngine implements SchemaPatchInterface
 {
@@ -63,7 +64,8 @@ class ChannelEngine implements SchemaPatchInterface
         ConfigBasedIntegrationManager $integrationManager,
         SalesSetupFactory $salesSetupFactory,
         QuoteSetupFactory $quoteSetupFactory,
-        EavSetupFactory $eavSetupFactory
+        EavSetupFactory $eavSetupFactory,
+        Config $eavConfig
     ) {
         $this->setup = $setup;
         $this->integrationManager = $integrationManager;
@@ -144,13 +146,10 @@ class ChannelEngine implements SchemaPatchInterface
             $salesSetup->addAttribute('order_item', $attr, $config);
         }
 
-        //TODO: remove this
-        foreach ($this->orderLineAttributes as $attr => $config) {
-            $eavSetup->addAttribute('catalog_product', $attr, $config);
-        }
+        $entityTypeId = $this->eavConfig->getEntityType('catalog_product')->getEntityTypeId();
 
         foreach ($this->productAttributes as $attr => $config) {
-            // $eavSetup->addAttribute('catalog_product', $attr, $config);
+            $eavSetup->addAttribute($entityTypeId, $attr, $config);
         }
 
         // Install integrations
