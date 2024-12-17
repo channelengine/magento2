@@ -155,7 +155,17 @@ class ChannelEngine implements SchemaPatchInterface
         }
 
         try {
-            $entityTypeId = $this->eavConfig->getEntityType(\Magento\Catalog\Model\Product::ENTITY)->getEntityTypeId();
+            $select = $conn->select()->from('eav_entity_type');
+
+            $result = $conn->fetchAll($select);
+
+            if (!empty($result)) {
+                $this->logger->info('eav_entity_type Data:', $result);
+            } else {
+                $this->logger->info('No data found in entity_type_code');
+            }
+
+            // $entityTypeId = $this->eavConfig->getEntityType(\Magento\Catalog\Model\Product::ENTITY)->getEntityTypeId();
 
             foreach ($this->productAttributes as $attr => $config) {
                 $eavSetup->addAttribute(4, $attr, $config);
