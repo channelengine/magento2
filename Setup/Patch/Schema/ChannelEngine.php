@@ -153,16 +153,11 @@ class ChannelEngine implements SchemaPatchInterface
         foreach ($this->orderLineAttributes as $attr => $config) {
             $salesSetup->addAttribute('order_item', $attr, $config);
         }
-
-        try {
-            foreach ($this->productAttributes as $attr => $config) {
-                $eavSetup->addAttribute(4, $attr, $config);
-            }
-        } catch (\Exception $e) {
-            $this->logger->error('Updating product was unsuccessful', ['exception' => $e]);
+        
+        foreach ($this->productAttributes as $attr => $config) {
+            $eavSetup->addAttribute(4, $attr, $config); 
         }
-    
-
+        
         // Install integrations
         $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
 
