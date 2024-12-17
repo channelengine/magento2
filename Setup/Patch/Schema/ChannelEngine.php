@@ -54,6 +54,8 @@ class ChannelEngine implements SchemaPatchInterface
 
     private $eavConfig;
 
+    private $logger;
+
     /**
      * @param ModuleDataSetupInterface $setup
      * @param ConfigBasedIntegrationManager $integrationManager
@@ -67,7 +69,8 @@ class ChannelEngine implements SchemaPatchInterface
         SalesSetupFactory $salesSetupFactory,
         QuoteSetupFactory $quoteSetupFactory,
         EavSetupFactory $eavSetupFactory,
-        Config $eavConfig
+        Config $eavConfig,
+        LoggerInterface $logger
     ) {
         $this->setup = $setup;
         $this->integrationManager = $integrationManager;
@@ -75,6 +78,7 @@ class ChannelEngine implements SchemaPatchInterface
         $this->quoteSetupFactory = $quoteSetupFactory;
         $this->eavSetupFactory = $eavSetupFactory;
         $this->eavConfig = $eavConfig;
+        $this->logger = $logger;
 
         $this->orderAttributes = [
             'ce_id' => [
@@ -149,11 +153,16 @@ class ChannelEngine implements SchemaPatchInterface
             $salesSetup->addAttribute('order_item', $attr, $config);
         }
 
-        $entityTypeId = $this->eavConfig->getEntityType(\Magento\Catalog\Model\Product::ENTITY)->getEntityTypeId();
+        try {
+            $entityTypeId = $this->eavConfig->getEntityType(\Magento\Catalog\Model\Product::ENTITY)->getEntityTypeId();
 
-        foreach ($this->productAttributes as $attr => $config) {
-            $eavSetup->addAttribute($entityTypeId, $attr, $config);
+            foreach ($this->productAttributes as $attr => $config) {
+                $eavSetup->addAttribute(4, $attr, $config);
+            }
+        } catch (\Exception $e) {
+            $this->logger->error('Updating product was unsuccessful', ['exception' => $e]);
         }
+    
 
         // Install integrations
         $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
