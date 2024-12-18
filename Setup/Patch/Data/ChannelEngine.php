@@ -6,11 +6,24 @@ use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\DB\Ddl\Table;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 
 class ChannelEngine implements DataPatchInterface
 {
+    /**
+     * @var ModuleDataSetupInterface
+     */
     private $setup;
+
+    /**
+     * @var EavSetupFactory
+     */
     protected $eavSetupFactory;
+
+    /**
+     * @var array|array[]
+     */
     private $productAttributes;
 
     public function __construct(
@@ -22,28 +35,21 @@ class ChannelEngine implements DataPatchInterface
 
         $this->productAttributes = [
             'ce_updated_at' => [
-                'type' => 'datetime',
+                'type' => Table::TYPE_DATETIME,
                 'visible' => false,
                 'input' => 'date',
                 'required' => false,
                 'user_defined' => false,
                 'default' => '2019-01-01 00:00:00',
-                'global' => 1,
+                'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
                 'label' => 'CE last product update'
             ]
         ];
     }
 
-    public static function getDependencies()
-    {
-        return [];
-    }
-
-    public function getAliases()
-    {
-        return [];
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function apply()
     {
         $this->setup->startSetup();
@@ -55,5 +61,21 @@ class ChannelEngine implements DataPatchInterface
         }
 
         $this->setup->endSetup();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getAliases()
+    {
+        return [];
+    }
+    
+    /**
+     * @inheritdoc
+     */
+    public static function getDependencies()
+    {
+        return [];
     }
 }

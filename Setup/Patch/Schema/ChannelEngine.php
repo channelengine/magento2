@@ -7,17 +7,13 @@ use Magento\Integration\Model\ConfigBasedIntegrationManager;
 use Magento\Sales\Setup\SalesSetupFactory;
 use Magento\Quote\Setup\QuoteSetupFactory;
 use Magento\Sales\Model\Order;
-use Magento\Catalog\Model\Product;
-use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
-use Magento\Eav\Model\Config;
-use Psr\Log\LoggerInterface;
-use Magento\Catalog\Model\Product\Type;
-use Magento\Eav\Setup\EavSetup;
 
 class ChannelEngine implements SchemaPatchInterface
 {
     private const QUOTE_ENTITY = 'quote';
+    private const ORDER_ITEM_ENTITY = 'order_item';
+    private const ORDER_GRID_TABLE = 'sales_order_grid';
 
     /**
      * @var ModuleDataSetupInterface
@@ -35,29 +31,19 @@ class ChannelEngine implements SchemaPatchInterface
     protected $salesSetupFactory;
 
     /**
-     * @var EavSetupFactory
-     */
-    protected $eavSetupFactory;
-    /**
      * @var QuoteSetupFactory
      */
     private $quoteSetupFactory;
+
     /**
      * @var array|array[]
      */
     private $orderAttributes;
+    
     /**
      * @var array|array[]
      */
     private $orderLineAttributes;
-    /**
-     * @var array|array[]
-     */
-    private $productAttributes;
-
-    private $eavConfig;
-
-    private $logger;
 
     /**
      * @param ModuleDataSetupInterface $setup
@@ -70,19 +56,13 @@ class ChannelEngine implements SchemaPatchInterface
         ModuleDataSetupInterface $setup,
         ConfigBasedIntegrationManager $integrationManager,
         SalesSetupFactory $salesSetupFactory,
-        QuoteSetupFactory $quoteSetupFactory,
-        EavSetupFactory $eavSetupFactory,
-        Config $eavConfig,
-        LoggerInterface $logger
+        QuoteSetupFactory $quoteSetupFactory        
     ) {
         $this->setup = $setup;
         $this->integrationManager = $integrationManager;
         $this->salesSetupFactory = $salesSetupFactory;
         $this->quoteSetupFactory = $quoteSetupFactory;
-        $this->eavSetupFactory = $eavSetupFactory;
-        $this->eavConfig = $eavConfig;
-        $this->logger = $logger;
-
+        
         $this->orderAttributes = [
             'ce_id' => [
                 'type' => Table::TYPE_INTEGER,
@@ -111,18 +91,6 @@ class ChannelEngine implements SchemaPatchInterface
                 'label' => 'CE Order Line ID'
             ]
         ];
-        $this->productAttributes = [
-            'ce_updated_at' => [
-                'type' => 'datetime',
-                'visible' => false,
-                'input' => 'date',
-                'required' => false,
-                'user_defined' => false,
-                'default' => '2019-01-01 00:00:00',
-                'global' => 1,
-                'label' => 'CE last product update'
-            ]
-        ];
     }
 
     /**
@@ -133,12 +101,11 @@ class ChannelEngine implements SchemaPatchInterface
         $this->setup->startSetup();
 
         $conn = $this->setup->getConnection();
-        $orderGridTable = $this->setup->getTable('sales_order_grid');
+        $orderGridTable = $this->setup->getTable(self::ORDER_GRID_TABLE);
 
         // Install attributes
         $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $this->setup]);
         $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
 
         foreach ($this->orderAttributes as $attr => $config) {
             $conn->addColumn($orderGridTable, $attr, [
@@ -149,41 +116,13 @@ class ChannelEngine implements SchemaPatchInterface
             ]);
 
             $salesSetup->addAttribute(Order::ENTITY, $attr, $config);
-            $quoteSetup->addAttribute("quote", $attr, $config);
+            $quoteSetup->addAttribute(self::QUOTE_ENTITY, $attr, $config);
         }
 
         foreach ($this->orderLineAttributes as $attr => $config) {
-            $salesSetup->addAttribute('order_item', $attr, $config);
+            $salesSetup->addAttribute(self::ORDER_ITEM_ENTITY, $attr, $config);
         }
 
-        // $productTypes = implode(',', [Type::TYPE_SIMPLE, Type::TYPE_VIRTUAL]);
-        
-        // foreach ($this->productAttributes as $attr => $config) {
-        //     $eavSetup->addAttribute(4, $attr, $config); 
-        // }
-
-        // $eavSetup->addAttribute(Product::ENTITY, 'sample_text_attribute', [
-        //     'type' => 'text',
-        //     'backend' => '',
-        //     'frontend' => '',
-        //     'label' => 'Sample Text Attribute',
-        //     'input' => 'text',
-        //     'class' => '',
-        //     'source' => '',
-        //     'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-        //     'visible' => true,
-        //     'required' => true,
-        //     'user_defined' => false,
-        //     'default' => '',
-        //     'searchable' => false,
-        //     'filterable' => false,
-        //     'comparable' => false,
-        //     'visible_on_front' => false,
-        //     'used_in_product_listing' => true,
-        //     'unique' => false,
-        //     'apply_to' => $productTypes
-        // ]);
-        
         // Install integrations
         $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
 
