@@ -16,6 +16,7 @@ class ProductObserver implements ObserverInterface
         $attr = 'ce_updated_at';
 
         // Set both: https://magento.stackexchange.com/a/229280        
-        $product->setCustomAttribute($attr, $date);        
+        $product->setCustomAttribute($attr, $date);  
+        $product->setCustomAttribute('ext_ce_updated_at', $date);        
     }
 }

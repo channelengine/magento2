@@ -3,7 +3,13 @@
     <event name="catalog_product_save_before">
         <observer name="channelengine" instance="ChannelEngine\Magento2\Observer\ProductObserver"/>
     </event>
+    <event name="cataloginventory_stock_item_save_after">
+        <observer name="channelengine" instance="ChannelEngine\Magento2\Observer\StockItemObserver"/>
+    </event>
     <event name="sales_model_service_quote_submit_success">
         <observer name="channelengine" instance="ChannelEngine\Magento2\Observer\OrderObserver"/>
+    </event>
+    <event name="catalog_product_import_bunch_save_after">
+        <observer name="channelengine" instance="ChannelEngine\Magento2\Observer\BulkProductObserver"/>
     </event>
 </config>
