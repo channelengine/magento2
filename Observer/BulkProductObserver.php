@@ -72,8 +72,17 @@ class BulkProductObserver implements ObserverInterface
         if (!is_array($entities))
             return $ids;
 
-        foreach ($entities as $key => $value) {
-            $ids[] = $key;            
+        //Wrong code. This code returns the array key value and not the product ID. Causing the wrong products to be updated or if the product does not exist in catalog_product_entity, an error is produced in the 
+        //magento exeptions logs:
+        // Updating ce_updated_at field was unsuccessful {"exception":"[object] (Zend_Db_Statement_Exception(code: 23000): SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`mydatabase`.`catalog_product_entity_datetime`, CONSTRAINT `CAT_PRD_ENTT_DTIME_ENTT_ID_CAT_PRD_ENTT_ENTT_ID` FOREIGN KEY (`entity_id`) REFERENCES
+        
+        //foreach ($entities as $key => $value) {
+        //    $ids[] = $key;            
+        //}
+
+        //New code
+        foreach ($entities as $product) {
+            $ids[] = $product->getId();
         }
 
         return $ids;
