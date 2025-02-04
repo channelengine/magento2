@@ -72,8 +72,8 @@ class BulkProductObserver implements ObserverInterface
         if (!is_array($entities))
             return $ids;
 
-        foreach ($entities as $key => $value) {
-            $ids[] = $key;            
+        foreach ($entities as $product) {
+            $ids[] = $product->getId();
         }
 
         return $ids;
