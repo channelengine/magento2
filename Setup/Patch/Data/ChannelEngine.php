@@ -1,5 +1,6 @@
 <?php namespace ChannelEngine\Magento2\Setup\Patch\Data;
 
+use Magento\Catalog\Model\Attribute\Backend\Startdate;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;
 use Magento\Framework\DB\Ddl\Table;
@@ -11,7 +12,7 @@ use Magento\Catalog\Model\Product;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
 
-class ChannelEngineDataPatch implements DataPatchInterface
+class ChannelEngine implements DataPatchInterface
 {
     private const QUOTE_ENTITY = 'quote';
 
@@ -99,17 +100,17 @@ class ChannelEngineDataPatch implements DataPatchInterface
                 'label' => 'CE Order Line ID'
             ]
         ];
+
         $this->productAttributes = [
             'ce_updated_at' => [
-                'type' => Table::TYPE_DATETIME,
-                'visible' => false,
+                'type' => 'datetime',
+                'label' => 'CE last product update',
                 'input' => 'date',
                 'required' => false,
                 'user_defined' => false,
-                'default' => '2019-01-01 00:00:00',
                 'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
-                'label' => 'CE last product update'
-            ]
+                'visible' => false,
+            ],
         ];
     }
 
@@ -120,13 +121,22 @@ class ChannelEngineDataPatch implements DataPatchInterface
     {
         $this->setup->startSetup();
 
+        $conn = $this->setup->getConnection();
+        $orderGridTable = $this->setup->getTable('sales_order_grid');
+
         // Install attributes
         $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $this->setup]);
         $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
 
         foreach ($this->orderAttributes as $attr => $config) {
-            
+            $conn->addColumn($orderGridTable, $attr, [
+                'type' => $config['type'],
+                'length' => 255,
+                'nullable' => true,
+                'comment' => $config['label']
+            ]);
+
             $salesSetup->addAttribute(Order::ENTITY, $attr, $config);
             $quoteSetup->addAttribute(self::QUOTE_ENTITY, $attr, $config);
         }
@@ -138,6 +148,9 @@ class ChannelEngineDataPatch implements DataPatchInterface
         foreach ($this->productAttributes as $attr => $config) {
             $eavSetup->addAttribute(Product::ENTITY, $attr, $config);
         }
+
+        // Install integrations
+        $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
 
         $this->setup->endSetup();
     }
