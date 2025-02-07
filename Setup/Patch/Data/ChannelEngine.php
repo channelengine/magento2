@@ -121,22 +121,12 @@ class ChannelEngine implements DataPatchInterface
     {
         $this->setup->startSetup();
 
-        $conn = $this->setup->getConnection();
-        $orderGridTable = $this->setup->getTable('sales_order_grid');
-
         // Install attributes
         $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $this->setup]);
         $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
 
         foreach ($this->orderAttributes as $attr => $config) {
-            $conn->addColumn($orderGridTable, $attr, [
-                'type' => $config['type'],
-                'length' => 255,
-                'nullable' => true,
-                'comment' => $config['label']
-            ]);
-
             $salesSetup->addAttribute(Order::ENTITY, $attr, $config);
             $quoteSetup->addAttribute(self::QUOTE_ENTITY, $attr, $config);
         }
