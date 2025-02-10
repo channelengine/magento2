@@ -122,22 +122,22 @@ class ChannelEngine implements DataPatchInterface
         $this->setup->startSetup();
 
         // Install attributes
-        $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $this->setup]);
-        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
+        // $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $this->setup]);
+        // $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
+        // $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
 
-        foreach ($this->orderAttributes as $attr => $config) {
-            $salesSetup->addAttribute(Order::ENTITY, $attr, $config);
-            $quoteSetup->addAttribute(self::QUOTE_ENTITY, $attr, $config);
-        }
+        // foreach ($this->orderAttributes as $attr => $config) {
+        //     $salesSetup->addAttribute(Order::ENTITY, $attr, $config);
+        //     $quoteSetup->addAttribute(self::QUOTE_ENTITY, $attr, $config);
+        // }
 
-        foreach ($this->orderLineAttributes as $attr => $config) {
-            $salesSetup->addAttribute('order_item', $attr, $config);
-        }
+        // foreach ($this->orderLineAttributes as $attr => $config) {
+        //     $salesSetup->addAttribute('order_item', $attr, $config);
+        // }
 
-        foreach ($this->productAttributes as $attr => $config) {
-            $eavSetup->addAttribute(Product::ENTITY, $attr, $config);
-        }
+        // foreach ($this->productAttributes as $attr => $config) {
+        //     $eavSetup->addAttribute(Product::ENTITY, $attr, $config);
+        // }
 
         // Install integrations
         $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
