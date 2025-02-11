@@ -101,12 +101,7 @@ class ChannelEngine implements SchemaPatchInterface
         $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);        
 
         foreach ($this->orderAttributes as $attr => $config) {
-            $conn->addColumn($orderGridTable, $attr, [
-                'type' => $config['type'],
-                'length' => 255,
-                'nullable' => true,
-                'comment' => $config['label']
-            ]);
+           
 
             $salesSetup->addAttribute(Order::ENTITY, $attr, $config);
             $quoteSetup->addAttribute(self::QUOTE_ENTITY, $attr, $config);
