@@ -12,4 +12,10 @@
             <resource ref="self" />
         </resources>
     </route>
+    <route url="/V1/channelengine/status" method="GET">
+        <service class="Vendor\ChannelEngine\Api\StatusApiInterface" method="getStatus"/>
+        <resources>
+            <resource ref="self"/>
+        </resources>
+    </route>
 </routes>
