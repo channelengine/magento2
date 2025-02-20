@@ -81,7 +81,7 @@ class BulkProductObserver implements ObserverInterface
 
     private function updateCeAttribute(array $productIds, $storeId) 
     {
-        $now = \DateTime::createFromFormat('U.u', microtime(true));
+        $now = \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
 
         $date = $now->format("m-d-Y H:i:s.u");
         $this->massAction->updateAttributes($productIds, array('ce_updated_at' => $date), $storeId);

@@ -11,7 +11,7 @@ class ProductObserver implements ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $now = \DateTime::createFromFormat('U.u', microtime(true));
+        $now = \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
 
         $product = $observer->getProduct();
         $date = $now->format("m-d-Y H:i:s.u");
