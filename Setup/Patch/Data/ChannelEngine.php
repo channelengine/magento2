@@ -61,7 +61,7 @@ class ChannelEngine implements DataPatchInterface
 
         $eavSetup->addAttribute(
             Product::ENTITY,
-            'sample_label_c',
+            'ce_updated_at',
             [
                 'type' => 'int',
                 'backend' => '',
