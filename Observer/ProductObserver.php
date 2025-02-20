@@ -11,12 +11,10 @@ class ProductObserver implements ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $t = microtime(true);
-        $micro = sprintf("%06d",($t - floor($t)) * 1000000);
-        $dateTime = new \DateTime( date('Y-m-d H:i:s.'.$micro, $t) );
+        $now = \DateTime::createFromFormat('U.u', microtime(true));
 
         $product = $observer->getProduct();
-        $date = $dateTime->format("Y-m-d H:i:s.u");
+        $date = $now->format("m-d-Y H:i:s.u");
         $attr = 'ce_updated_at';
 
         // Set both: https://magento.stackexchange.com/a/229280
