@@ -1,26 +1,44 @@
 <?php namespace ChannelEngine\Magento2\Observer;
 
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Catalog\Model\ProductRepository;
+use Psr\Log\LoggerInterface;
 
 class ProductObserver implements ObserverInterface
 {
-    public function __construct()
-    {
-        
+    protected $productRepository;
+    protected $logger;
+
+    public function __construct(
+        ProductRepository $productRepository,
+        LoggerInterface $logger
+    ) {
+        $this->productRepository = $productRepository;
+        $this->logger = $logger;
     }
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
+        $product = $observer->getEvent()->getProduct();
+        $productId = $product->getId();
+
         try {
-            $product = $observer->getProduct();
+            // Load the product again to avoid conflicts
+            $loadedProduct = $this->productRepository->getById($productId);
+
             $date = date('Y-m-d H:i:s');
             $attr = 'ce_updated_at';
 
-            // Set both: https://magento.stackexchange.com/a/229280
-            $product->setData($attr, $date);
-            $product->setCustomAttribute($attr, $date);
+            // Set the attribute value (Replace 'your_attribute_code' with the actual attribute code)
+            $loadedProduct->setCustomAttribute($attr, $date);
+            $loadedProduct->setData($attr, $date); // Alternative way
+
+            // Save the updated product
+            $this->productRepository->save($loadedProduct);
+
+            $this->logger->info('Updated product attribute for Product ID: ' . $productId);
         } catch (\Exception $e) {
-            // Ignoring edge case error when multiple products are being updated at once (ex. performance test)
+            $this->logger->error('Error updating product attribute: ' . $e->getMessage());
         }
     }
 }
