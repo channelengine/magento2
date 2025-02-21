@@ -11,4 +11,7 @@
             </argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Catalog\Api\ProductRepositoryInterface">
+        <plugin name="update_ce_updated_at_attribute" type="ChannelEngine\Magento2\Plugin\UpdateCeUpdatedAtAttribute" />
+    </type>
 </config>
