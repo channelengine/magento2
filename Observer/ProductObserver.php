@@ -13,12 +13,13 @@ class ProductObserver implements ObserverInterface
     {
         $now = \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
 
-        $product = $observer->getProduct();
-        $date = $now->format("m-d-Y H:i:s.u");
-        $attr = 'ce_updated_at';
+        // $product = $observer->getProduct();
+        // $date = $now->format("m-d-Y H:i:s.u");
+        // $attr = 'ce_updated_at';
 
-        // Set both: https://magento.stackexchange.com/a/229280
-        $product->setData($attr, $date);
-        $product->setCustomAttribute($attr, $date);
+        // try commenting out the lines below to find out the error is coming from there or not
+        // // Set both: https://magento.stackexchange.com/a/229280
+        // $product->setData($attr, $date);
+        // $product->setCustomAttribute($attr, $date);
     }
 }
