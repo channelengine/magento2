@@ -43,11 +43,13 @@ class UpdateCeUpdatedAtAttribute
      */
     public function beforeSave(ProductRepositoryInterface $subject, ProductInterface $product) {
 
-        $currentDate = $this->dateTime->gmtDate();
+//        $currentDate = $this->dateTime->gmtDate();
+
+        $date = date('Y-m-d H:i:s');
 
         try {
-            $product->setCustomAttribute('ce_updated_at', $currentDate);
-            $product->setData('ce_updated_at', $currentDate);
+            $product->setData('ce_updated_at', $date);
+            $product->setCustomAttribute('ce_updated_at', $date);
             return [$product];
         } catch (\Exception $e) {
             $this->logger->error(
