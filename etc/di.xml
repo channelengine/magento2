@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 <!-- Sync the column "my_column" between the sales_order and sales_order_grid tables -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Api\ProductRepositoryInterface">
+        <plugin name="update_ce_updated_at_attribute" type="ChannelEngine\Magento2\Plugin\ProductRepositorySaveInterceptor" sortOrder="1" />
+    </type>
+    <type name="Magento\Catalog\Model\Product">
+        <plugin name="vendor_module_product_save_interceptor" type="ChannelEngine\Magento2\Plugin\ProductSaveInterceptor" sortOrder="10"/>
+    </type>
     <preference for="ChannelEngine\Magento2\Api\ChannelEngineApiInterface" type="ChannelEngine\Magento2\Model\ChannelEngineApi"/>
     <preference for="ChannelEngine\Magento2\Api\StatusApiInterface" type="ChannelEngine\Magento2\Model\StatusApi"/>
     <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
@@ -11,7 +17,4 @@
             </argument>
         </arguments>
     </virtualType>
-    <type name="Magento\Catalog\Api\ProductRepositoryInterface">
-        <plugin name="update_ce_updated_at_attribute" type="ChannelEngine\Magento2\Plugin\UpdateCeUpdatedAtAttribute" />
-    </type>
 </config>

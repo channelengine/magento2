@@ -5,16 +5,10 @@ namespace ChannelEngine\Magento2\Plugin;
 use Magento\Catalog\Api\Data\ProductInterface;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Stdlib\DateTime\DateTime;
 use Psr\Log\LoggerInterface;
 
-class UpdateCeUpdatedAtAttribute
+class ProductRepositorySaveInterceptor
 {
-
-    /**
-     * @var DateTime
-     */
-    protected $dateTime;
 
     /**
      * @var LoggerInterface
@@ -24,12 +18,10 @@ class UpdateCeUpdatedAtAttribute
     /**
      * Constructor
      *
-     * @param DateTime $dateTime
      * @param LoggerInterface $logger
      */
-    public function __construct(DateTime $dateTime, LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger)
     {
-        $this->dateTime = $dateTime;
         $this->logger = $logger;
     }
 
@@ -41,23 +33,20 @@ class UpdateCeUpdatedAtAttribute
      * @return ProductInterface|ProductInterface[]
      * @throws LocalizedException
      */
-    public function beforeSave(ProductRepositoryInterface $subject, ProductInterface $product) {
-
-//        $currentDate = $this->dateTime->gmtDate();
-
+    public function beforeSave(ProductRepositoryInterface $subject, ProductInterface $product, $saveOptions = false) {
         $date = date('Y-m-d H:i:s');
 
         try {
             $product->setData('ce_updated_at', $date);
             $product->setCustomAttribute('ce_updated_at', $date);
-            return [$product];
+            return [$product, $saveOptions];
         } catch (\Exception $e) {
             $this->logger->error(
                 'Error occurred while updating ce_updated_at attribute for product ID ' . $product->getId(),
                 ['exception' => $e]
             );
 
-            return [$product];
+            return [$product, $saveOptions];
         }
     }
 }
