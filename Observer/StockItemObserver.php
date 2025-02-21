@@ -17,17 +17,15 @@ class StockItemObserver implements ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $now = \DateTime::createFromFormat('U.u', sprintf('%.6f', microtime(true)));
-
         $stockItem = $observer->getItem();
         $productId = $stockItem->getProductId();
         $product = $this->productRepository->getById($productId);
-        $date = $now->format("m-d-Y H:i:s.u");
+        $milliseconds = (int) (microtime(true) * 1000);
         $attr = 'ce_updated_at';
 
         // Set both: https://magento.stackexchange.com/a/229280
-        $product->setData($attr, $date);
-        $product->setCustomAttribute($attr, $date);
+        $product->setData($attr, $milliseconds);
+        $product->setCustomAttribute($attr, $milliseconds);
 
         // Save only the attribute, to prevent cyclic events (when already performing a product save)
         $product->getResource()->saveAttribute($product, $attr);
