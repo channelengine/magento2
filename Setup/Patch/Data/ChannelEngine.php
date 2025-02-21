@@ -63,11 +63,11 @@ class ChannelEngine implements DataPatchInterface
             Product::ENTITY,
             'ce_updated_at',
             [
-                'type' => 'int',
+                'type' => 'datetime',
                 'backend' => '',
                 'frontend' => '',
                 'label' => 'ChannelEngine last product update',
-                'input' => '',
+                'input' => 'date',
                 'class' => '',
                 'source' => '',
                 'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,

@@ -11,12 +11,16 @@ class ProductObserver implements ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $product = $observer->getProduct();
-        $milliseconds = (int) (microtime(true) * 1000);
-        $attr = 'ce_updated_at';
+        try {
+            $product = $observer->getProduct();
+            $date = date('Y-m-d H:i:s');
+            $attr = 'ce_updated_at';
 
-        // Set both: https://magento.stackexchange.com/a/229280
-        $product->setData($attr, $milliseconds);
-        $product->setCustomAttribute($attr, $milliseconds);
+            // Set both: https://magento.stackexchange.com/a/229280
+            $product->setData($attr, $date);
+            $product->setCustomAttribute($attr, $date);
+        } catch (\Exception $e) {
+            // Ignoring edge case error when multiple products are being updated at once (ex. performance test)
+        }
     }
 }

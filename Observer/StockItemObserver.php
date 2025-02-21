@@ -17,17 +17,21 @@ class StockItemObserver implements ObserverInterface
 
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        $stockItem = $observer->getItem();
-        $productId = $stockItem->getProductId();
-        $product = $this->productRepository->getById($productId);
-        $milliseconds = (int) (microtime(true) * 1000);
-        $attr = 'ce_updated_at';
+        try {
+            $stockItem = $observer->getItem();
+            $productId = $stockItem->getProductId();
+            $product = $this->productRepository->getById($productId);
+            $date = date('Y-m-d H:i:s');
+            $attr = 'ce_updated_at';
 
-        // Set both: https://magento.stackexchange.com/a/229280
-        $product->setData($attr, $milliseconds);
-        $product->setCustomAttribute($attr, $milliseconds);
+            // Set both: https://magento.stackexchange.com/a/229280
+            $product->setData($attr, $date);
+            $product->setCustomAttribute($attr, $date);
 
-        // Save only the attribute, to prevent cyclic events (when already performing a product save)
-        $product->getResource()->saveAttribute($product, $attr);
+            // Save only the attribute, to prevent cyclic events (when already performing a product save)
+            $product->getResource()->saveAttribute($product, $attr);
+        } catch (\Exception $e) {
+            // Ignoring edge case error when multiple products are being updated at once (ex. performance test)
+        }
     }
 }
