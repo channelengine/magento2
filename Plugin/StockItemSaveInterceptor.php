@@ -40,52 +40,52 @@ class StockItemSaveInterceptor
         $this->dateTime = $dateTime;
     }
 
-    /**
-     * After save plugin to update custom product attribute
-     *
-     * @param StockItemRepositoryInterface $subject
-     * @param StockItemInterface $result
-     * @return StockItemInterface
-     * @throws NoSuchEntityException
-     * @throws CouldNotSaveException
-     */
-    public function afterSave(
-        StockItemRepositoryInterface $subject,
-        StockItemInterface $result
-    ) {
-        $this->logger->debug('Called StockItem afterSave...');
-
-        $productId = $result->getProductId();
-
-
-        if ($productId) {
-            try {
-                $product = $this->productRepository->getById($productId);
-
-                $minutesDiff = $this->getLastUpdatedAtDifference($product);
-
-                if ($minutesDiff <= 5) {
-                    return $result; // Do nothing
-                }
-
-                $date = $this->dateTime->gmtDate();
-
-                $product->setData('ce_updated_at', $date);
-                $product->setCustomAttribute('ce_updated_at', $date);
-
-                // Save only the attribute, to prevent cyclic events (when already performing a product save)
-                $product->getResource()->saveAttribute($product, 'ce_updated_at');
-            } catch (NoSuchEntityException $e) {
-                // TODO: log instead and return $result to do nothing
-                throw new NoSuchEntityException(__('Product not found: %1', $productId));
-            } catch (\Exception $e) {
-                // TODO: just log and do nothing
-                throw new CouldNotSaveException(__('Could not save product: %1', $e->getMessage()));
-            }
-        }
-
-        return $result;
-    }
+//    /**
+//     * After save plugin to update custom product attribute
+//     *
+//     * @param StockItemRepositoryInterface $subject
+//     * @param StockItemInterface $result
+//     * @return StockItemInterface
+//     * @throws NoSuchEntityException
+//     * @throws CouldNotSaveException
+//     */
+//    public function afterSave(
+//        StockItemRepositoryInterface $subject,
+//        StockItemInterface $result
+//    ) {
+//        $this->logger->debug('Called StockItem afterSave...');
+//
+//        $productId = $result->getProductId();
+//
+//
+//        if ($productId) {
+//            try {
+//                $product = $this->productRepository->getById($productId);
+//
+//                $minutesDiff = $this->getLastUpdatedAtDifference($product);
+//
+//                if ($minutesDiff <= 5) {
+//                    return $result; // Do nothing
+//                }
+//
+//                $date = $this->dateTime->gmtDate();
+//
+//                $product->setData('ce_updated_at', $date);
+//                $product->setCustomAttribute('ce_updated_at', $date);
+//
+//                // Save only the attribute, to prevent cyclic events (when already performing a product save)
+//                $product->getResource()->saveAttribute($product, 'ce_updated_at');
+//            } catch (NoSuchEntityException $e) {
+//                // TODO: log instead and return $result to do nothing
+//                throw new NoSuchEntityException(__('Product not found: %1', $productId));
+//            } catch (\Exception $e) {
+//                // TODO: just log and do nothing
+//                throw new CouldNotSaveException(__('Could not save product: %1', $e->getMessage()));
+//            }
+//        }
+//
+//        return $result;
+//    }
 
     /**
      * @param $product

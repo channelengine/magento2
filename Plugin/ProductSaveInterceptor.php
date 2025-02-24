@@ -31,34 +31,34 @@ class ProductSaveInterceptor
         $this->dateTime = $dateTime;
     }
 
-    public function beforeSave(Product $subject)
-    {
-        // This beforeSave is being called when the Product is saved on the UI manually
-
-        $this->logger->debug('Called Product beforeSave...');
-
-        try {
-            $minutesDiff = $this->getLastUpdatedAtDifference($subject);
-
-            if ($minutesDiff <= 5) {
-                return null;
-            }
-
-            $date = $this->dateTime->gmtDate();
-
-            $subject->setData('ce_updated_at', $date);
-            $subject->setCustomAttribute('ce_updated_at', $date);
-
-            return null; // Must return null
-        } catch (\Exception $e) {
-            $this->logger->error(
-                'Error occurred while updating ce_updated_at attribute for product ID ' . $subject->getId(),
-                ['exception' => $e]
-            );
-
-            return null;
-        }
-    }
+//    public function beforeSave(Product $subject)
+//    {
+//        // This beforeSave is being called when the Product is saved on the UI manually
+//
+//        $this->logger->debug('Called Product beforeSave...');
+//
+//        try {
+//            $minutesDiff = $this->getLastUpdatedAtDifference($subject);
+//
+//            if ($minutesDiff <= 5) {
+//                return null;
+//            }
+//
+//            $date = $this->dateTime->gmtDate();
+//
+//            $subject->setData('ce_updated_at', $date);
+//            $subject->setCustomAttribute('ce_updated_at', $date);
+//
+//            return null; // Must return null
+//        } catch (\Exception $e) {
+//            $this->logger->error(
+//                'Error occurred while updating ce_updated_at attribute for product ID ' . $subject->getId(),
+//                ['exception' => $e]
+//            );
+//
+//            return null;
+//        }
+//    }
 
     /**
      * @param $product
@@ -80,26 +80,4 @@ class ProductSaveInterceptor
 
         return $minutesDiff;
     }
-
-//    public function afterSave(Product $subject, Product $result)
-//    {
-//        try {
-//            // Example: Log the product ID and update a custom datetime attribute
-//            $productId = $result->getId();
-//            $this->logger->info("Product {$productId} was saved.");
-//
-//            $date = date('Y-m-d H:i:s');
-//
-//            $subject->setData('ce_updated_at', $date);
-//            $subject->setCustomAttribute('ce_updated_at', $date);
-//
-////            // Save the product again (optional, but might trigger another plugin execution)
-////            $result->save();
-//
-//        } catch (\Exception $e) {
-//            $this->logger->error("Error in ProductPlugin afterSave: " . $e->getMessage());
-//        }
-//
-//        return $result;
-//    }
 }
