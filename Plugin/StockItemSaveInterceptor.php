@@ -53,8 +53,8 @@ class StockItemSaveInterceptor
             try {
                 $product = $this->productRepository->getById($productId);
 
-                $subject->setData('ce_updated_at', $date);
-                $subject->setCustomAttribute('ce_updated_at', $date);
+                $product->setData('ce_updated_at', $date);
+                $product->setCustomAttribute('ce_updated_at', $date);
 
                 $this->productRepository->save($product);
             } catch (NoSuchEntityException $e) {
