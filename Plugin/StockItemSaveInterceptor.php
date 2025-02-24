@@ -56,7 +56,8 @@ class StockItemSaveInterceptor
                 $product->setData('ce_updated_at', $date);
                 $product->setCustomAttribute('ce_updated_at', $date);
 
-                $this->productRepository->save($product);
+                // Save only the attribute, to prevent cyclic events (when already performing a product save)
+                $product->getResource()->saveAttribute($product, 'ce_updated_at');
             } catch (NoSuchEntityException $e) {
                 throw new NoSuchEntityException(__('Product not found: %1', $productId));
             } catch (\Exception $e) {

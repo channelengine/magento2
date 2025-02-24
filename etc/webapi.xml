@@ -13,7 +13,7 @@
         </resources>
     </route>
     <route url="/V1/channelengine/status" method="GET">
-        <service class="Vendor\ChannelEngine\Api\StatusApiInterface" method="getStatus"/>
+        <service class="ChannelEngine\Magento2\Api\StatusApiInterface" method="getStatus"/>
         <resources>
             <resource ref="self"/>
         </resources>
