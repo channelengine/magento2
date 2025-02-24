@@ -36,12 +36,24 @@ class ChannelEngine implements DataPatchInterface
         $this->productAttributes = [
             'ce_updated_at' => [
                 'type' => 'datetime',
-                'label' => 'CE last product update',
+                'backend' => '',
+                'frontend' => '',
+                'label' => 'ChannelEngine last product update',
                 'input' => 'date',
-                'required' => false,
-                'user_defined' => false,
+                'class' => '',
+                'source' => '',
                 'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
                 'visible' => false,
+                'required' => false,
+                'user_defined' => false,
+                'default' => 0,
+                'searchable' => false,
+                'filterable' => false,
+                'comparable' => false,
+                'visible_on_front' => false,
+                'used_in_product_listing' => false,
+                'unique' => false,
+                'apply_to' => ''
             ],
         ];
     }
@@ -55,35 +67,9 @@ class ChannelEngine implements DataPatchInterface
 
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->setup]);
 
-//        foreach ($this->productAttributes as $attr => $config) {
-//            $eavSetup->addAttribute(Product::ENTITY, $attr, $config);
-//        }
-
-        $eavSetup->addAttribute(
-            Product::ENTITY,
-            'ce_updated_at',
-            [
-                'type' => 'datetime',
-                'backend' => '',
-                'frontend' => '',
-                'label' => 'ChannelEngine last product update',
-                'input' => 'date',
-                'class' => '',
-                'source' => '',
-                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
-                'visible' => false,
-                'required' => false,
-                'user_defined' => false,
-                'default' => 0,
-                'searchable' => false,
-                'filterable' => false,
-                'comparable' => false,
-                'visible_on_front' => false,
-                'used_in_product_listing' => false,
-                'unique' => false,
-                'apply_to' => ''
-            ]
-        );
+        foreach ($this->productAttributes as $attr => $config) {
+            $eavSetup->addAttribute(Product::ENTITY, $attr, $config);
+        }
 
         $this->setup->endSetup();
     }
