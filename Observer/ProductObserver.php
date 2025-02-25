@@ -4,29 +4,49 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Psr\Log\LoggerInterface;
+use ChannelEngine\Magento2\Helper\ProductHelper;
 
 class ProductObserver implements ObserverInterface
 {
+    /**
+     * @var DateTime
+     */
     private DateTime $dateTime;
+    /**
+     * @var LoggerInterface
+     */
     private LoggerInterface $logger;
+    /**
+     * @var ProductHelper
+     */
+    private ProductHelper $productHelper;
 
+    /**
+     * @param LoggerInterface $logger
+     * @param DateTime $dateTime
+     * @param ProductHelper $productHelper
+     */
     public function __construct(
         LoggerInterface $logger,
-        DateTime $dateTime
+        DateTime $dateTime,
+        ProductHelper $productHelper
     )
     {
         $this->dateTime = $dateTime;
         $this->logger = $logger;
+        $this->productHelper = $productHelper;
     }
 
+    /**
+     * @param Observer $observer
+     * @return void
+     */
     public function execute(Observer $observer)
     {
         try {
             $product = $observer->getProduct();
 
-            $minutesDiff = $this->getLastUpdatedAtDifference($product);
-
-            if ($minutesDiff <= 1) {
+            if ($this->productHelper->wasUpdatedRecently($product)) {
                 return;
             }
 
@@ -39,26 +59,5 @@ class ProductObserver implements ObserverInterface
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
-    }
-
-    /**
-     * @param $product
-     * @return float|int
-     * @throws \DateMalformedStringException
-     */
-    public function getLastUpdatedAtDifference($product)
-    {
-        $lastUpdatedAt = $product->getUpdatedAt();
-
-        $currentTime = $this->dateTime->gmtDate();
-
-        $productUpdatedAtTime = new \DateTime($lastUpdatedAt);
-        $currentTimeObj = new \DateTime($currentTime);
-
-        // Calculate the difference in minutes
-        $interval = $productUpdatedAtTime->diff($currentTimeObj);
-        $minutesDiff = $interval->i + ($interval->d * 24 * 60) + ($interval->h * 60);
-
-        return $minutesDiff;
     }
 }

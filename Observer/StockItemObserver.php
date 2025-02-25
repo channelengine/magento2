@@ -5,6 +5,7 @@ use Magento\Framework\Event\ObserverInterface;
 use Magento\Catalog\Model\ProductRepository;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use Psr\Log\LoggerInterface;
+use ChannelEngine\Magento2\Helper\ProductHelper;
 
 class StockItemObserver implements ObserverInterface
 {
@@ -16,23 +17,38 @@ class StockItemObserver implements ObserverInterface
      * @var LoggerInterface
      */
     private LoggerInterface $logger;
+    /**
+     * @var DateTime
+     */
     private DateTime $dateTime;
+    /**
+     * @var ProductHelper
+     */
+    private ProductHelper $productHelper;
 
     /**
      * @param ProductRepository $productRepository
      * @param LoggerInterface $logger
      * @param DateTime $dateTime
+     * @param ProductHelper $productHelper
      */
     public function __construct(
         ProductRepository $productRepository,
         LoggerInterface $logger,
-        DateTime $dateTime)
+        DateTime $dateTime,
+        ProductHelper $productHelper
+    )
     {
         $this->productRepository = $productRepository;
         $this->logger = $logger;
         $this->dateTime = $dateTime;
+        $this->productHelper = $productHelper;
     }
 
+    /**
+     * @param Observer $observer
+     * @return void
+     */
     public function execute(Observer $observer)
     {
         try {
@@ -40,9 +56,7 @@ class StockItemObserver implements ObserverInterface
             $productId = $stockItem->getProductId();
             $product = $this->productRepository->getById($productId);
 
-            $minutesDiff = $this->getLastUpdatedAtDifference($product);
-
-            if ($minutesDiff <= 1) {
+            if ($this->productHelper->wasUpdatedRecently($product)) {
                 return;
             }
 
@@ -58,26 +72,5 @@ class StockItemObserver implements ObserverInterface
         } catch (\Exception $e) {
             $this->logger->error($e->getMessage());
         }
-    }
-
-    /**
-     * @param $product
-     * @return float|int
-     * @throws \DateMalformedStringException
-     */
-    public function getLastUpdatedAtDifference($product)
-    {
-        $lastUpdatedAt = $product->getUpdatedAt();
-
-        $currentTime = $this->dateTime->gmtDate();
-
-        $productUpdatedAtTime = new \DateTime($lastUpdatedAt);
-        $currentTimeObj = new \DateTime($currentTime);
-
-        // Calculate the difference in minutes
-        $interval = $productUpdatedAtTime->diff($currentTimeObj);
-        $minutesDiff = $interval->i + ($interval->d * 24 * 60) + ($interval->h * 60);
-
-        return $minutesDiff;
     }
 }
