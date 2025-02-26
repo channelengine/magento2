@@ -28,7 +28,14 @@ class ProductHelper
      */
     public function wasUpdatedRecently($product): bool
     {
-        $lastUpdatedAt = $product->getUpdatedAt();
+        $existingCeUpdatedAt = $product->getCustomAttribute('ce_updated_at');
+
+        // If the attribute doesn't exist, treat it as not updated recently
+        if (!$existingCeUpdatedAt || !$existingCeUpdatedAt->getValue()) {
+            return false;
+        }
+
+        $lastUpdatedAt = $existingCeUpdatedAt->getValue();
         $currentTime = $this->dateTime->gmtTimestamp();
 
         $productUpdatedAtTime = strtotime($lastUpdatedAt);
