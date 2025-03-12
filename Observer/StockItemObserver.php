@@ -1,33 +1,76 @@
 <?php namespace ChannelEngine\Magento2\Observer;
 
+use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Catalog\Model\ProductRepository;
+use Magento\Framework\Stdlib\DateTime\DateTime;
+use Psr\Log\LoggerInterface;
+use ChannelEngine\Magento2\Helper\ProductHelper;
 
 class StockItemObserver implements ObserverInterface
 {
     /**
      * @var ProductRepository
      */
-    private $productRepository;
+    private ProductRepository $productRepository;
+    /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+    /**
+     * @var DateTime
+     */
+    private DateTime $dateTime;
+    /**
+     * @var ProductHelper
+     */
+    private ProductHelper $productHelper;
 
-    public function __construct(ProductRepository $productRepository)
+    /**
+     * @param ProductRepository $productRepository
+     * @param LoggerInterface $logger
+     * @param DateTime $dateTime
+     * @param ProductHelper $productHelper
+     */
+    public function __construct(
+        ProductRepository $productRepository,
+        LoggerInterface $logger,
+        DateTime $dateTime,
+        ProductHelper $productHelper
+    )
     {
         $this->productRepository = $productRepository;
+        $this->logger = $logger;
+        $this->dateTime = $dateTime;
+        $this->productHelper = $productHelper;
     }
 
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    /**
+     * @param Observer $observer
+     * @return void
+     */
+    public function execute(Observer $observer)
     {
-        $stockItem = $observer->getItem();
-        $productId = $stockItem->getProductId();
-        $product = $this->productRepository->getById($productId);
-        $date = date('Y-m-d H:i:s');
-        $attr = 'ce_updated_at';
+        try {
+            $stockItem = $observer->getItem();
+            $productId = $stockItem->getProductId();
+            $product = $this->productRepository->getById($productId);
 
-        // Set both: https://magento.stackexchange.com/a/229280
-        $product->setData($attr, $date);
-        $product->setCustomAttribute($attr, $date);
+            if ($this->productHelper->wasUpdatedRecently($product)) {
+                return;
+            }
 
-        // Save only the attribute, to prevent cyclic events (when already performing a product save)
-        $product->getResource()->saveAttribute($product, $attr);
+            $date = $this->dateTime->gmtDate();
+            $attr = 'ce_updated_at';
+
+            // Set both: https://magento.stackexchange.com/a/229280
+            $product->setData($attr, $date);
+            $product->setCustomAttribute($attr, $date);
+
+            // Save only the attribute, to prevent cyclic events (when already performing a product save)
+            $product->getResource()->saveAttribute($product, $attr);
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+        }
     }
 }
