@@ -1,0 +1,18 @@
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminOrderGridCeChannelVisibilityTest">
+        <annotations>
+            <title value="Check if CE Channel grid column is displayed correctly"/>
+            <stories value="Check order grid"/>
+            <description value="CE Channel column is filled with data from ChannelEngine"/>
+            <severity value="MINOR"/>
+            <group value="ChannelEngineExtension"/>
+        </annotations>
+
+        <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+
+<!--        change admin url to dynamic !!!-->
+        <amOnPage url="admin_yzdkqs/sales/order/index" stepKey="openOrdersPage" />
+
+        <seeElement stepKey="seeCeChannelText" selector="{{OrderGridSection.ceChannelSpan}}" />
+    </test>
+</tests>
