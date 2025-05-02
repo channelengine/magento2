@@ -1,0 +1,19 @@
+<actionGroups xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/actionGroupSchema.xsd">
+    <actionGroup name="AdminCatalogActionGroup">
+        <amOnPage stepKey="amOnAdminCatalogPage" url="{{AdminCatalogPage.url}}"/>
+        <click selector="{{AdminSection.clickOnselector}}" stepKey="clickOnTheMarketPlace"/>
+        <click selector="{{AdminSection.clickOnConfig}}" stepKey="clickOnConfig"/>
+        <click selector="{{AdminSection.clickOnCatalog}}" stepKey="clickOnCatalog"/>
+        <scrollTo selector="//a[@id='module-head']" stepKey="scrollToAnchor"/>
+        <selectOption stepKey="productTypeId"
+                      parameterArray= "['Configurable Product','Grouped Product']"
+                      selector="{{AdminCatalogSection.productType}}"/>
+        <click selector="{{AdminSection.ClickOnAttribute}}" stepKey="ClickOnAttribute"/>
+        <selectOption stepKey="attributeType"
+                      parameterArray= "['Short Description','Special Price']"
+                      selector="{{AdminSection.attributeType}}"/>
+        <scrollToTopOfPage stepKey="onTopOfPage"/>
+        <click selector="{{AdminSection.clickOnCatalog}}" stepKey="clickOnCatalogAgain"/>
+        <click selector="{{AdminSection.clickOnTheSave}}" stepKey="SaveConfiguration"/>
+    </actionGroup>
+</actionGroups>

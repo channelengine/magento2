@@ -1,0 +1,8 @@
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
+    <entity name="AdminAddSecondProductData" type="SecondProductsData">
+        <data key="productName">demoproduct</data>
+        <data key="Sku">demoproduct123</data>
+        <data key="Price">520</data>
+        <data key="Qty">313</data>
+    </entity>
+</entities>
