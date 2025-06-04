@@ -1,8 +1,21 @@
 <entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:DataGenerator/etc/dataProfileSchema.xsd">
-    <entity name="AdminAddSecondProductData" type="SecondProductsData">
-        <data key="productName">demoproduct</data>
-        <data key="Sku">demoproduct123</data>
-        <data key="Price">520</data>
-        <data key="Qty">313</data>
+    <entity name="CeTestProduct" type="product">
+        <data key="sku" unique="suffix">sku_simple_product_</data>
+        <data key="type_id">simple</data>
+        <data key="attribute_set_id">4</data>
+        <data key="visibility">4</data>
+        <data key="name" unique="suffix">SimpleProduct</data>
+        <data key="price">560</data>
+        <data key="urlKey" unique="suffix">simple-product-</data>
+        <data key="status">1</data>
+        <data key="quantity">25</data>
+        <data key="weight">1</data>
+        <data key="product_has_weight">1</data>
+        <data key="is_in_stock">1</data>
+        <data key="tax_class_id">2</data>
+        <requiredEntity type="product_extension_attribute">EavStockItem</requiredEntity>
+    </entity>
+    <entity name="UpdateCeTestProduct" type="product">
+        <data key="price">321</data>
     </entity>
 </entities>

@@ -1,0 +1,27 @@
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminProductCeUpdatedVerificationTest">
+        <annotations>
+            <title value="Check if product has ce_updated_at attribute"/>
+            <stories value="Check product"/>
+            <description value="Check if product has ce_updated_at attribute created by ChannelEngine"/>
+            <severity value="MINOR"/>
+            <group value="ChannelEngineExtension"/>
+        </annotations>
+
+        <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <createData entity="CeTestProduct" stepKey="testProduct" />
+        </before>
+
+        <comment userInput="Checking product ce_updated_at..." stepKey="seeProduct" />
+        <assertNotNull
+            message="ce_updated_at should not be empty"
+            stepKey="assertCeUpdatedAtExists">
+            <actualResult type="string">$$testProduct.custom_attributes[ce_updated_at]$$</actualResult>
+        </assertNotNull>
+
+        <after>
+            <deleteData createDataKey="testProduct" stepKey="deleteTestProduct" />
+        </after>
+    </test>
+</tests>

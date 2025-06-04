@@ -5,14 +5,15 @@
             <stories value="Check order grid"/>
             <description value="CE Channel column is filled with data from ChannelEngine"/>
             <severity value="MINOR"/>
-            <group value="ChannelEngineExtension"/>
+<!--            <group value="ChannelEngineExtension"/>-->
         </annotations>
 
         <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
 
-        <!--        change admin url to dynamic !!!-->
-        <amOnPage url="admin_yzdkqs/sales/order/index" stepKey="openOrdersPage" />
+        <comment userInput="Opening orders page..." stepKey="openOrdersPageComment" />
+        <actionGroup ref="AdminOrdersPageOpenActionGroup" stepKey="goToOrders"/>
 
-        <seeElement stepKey="seeCeChannelOrderNoText" selector="{{OrderGridSection.ceChannelOrderNoSpan}}" />
+        <comment userInput="Checking CE Channel Order No in the order grid..." stepKey="seeCeChannelOrderNoTextComment" />
+        <seeElement selector="{{OrderGridSection.ceChannelOrderNoSpan}}" stepKey="seeCeChannelOrderNoText" />
     </test>
 </tests>
