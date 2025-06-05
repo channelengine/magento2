@@ -5,7 +5,7 @@
             <stories value="Check order grid"/>
             <description value="CE Channel column is filled with data from ChannelEngine"/>
             <severity value="MINOR"/>
-<!--            <group value="ChannelEngineExtension"/>-->
+            <group value="ChannelEngineExtension"/>
         </annotations>
 
         <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
