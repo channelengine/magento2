@@ -1,12 +1,12 @@
 <?php namespace ChannelEngine\Magento2\Setup\Patch\Schema;
 
+use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\SchemaPatchInterface;
-use Magento\Framework\DB\Ddl\Table;
 use Magento\Integration\Model\ConfigBasedIntegrationManager;
-use Magento\Sales\Setup\SalesSetupFactory;
 use Magento\Quote\Setup\QuoteSetupFactory;
 use Magento\Sales\Model\Order;
+use Magento\Sales\Setup\SalesSetupFactory;
 
 class ChannelEngine implements SchemaPatchInterface
 {
@@ -25,7 +25,7 @@ class ChannelEngine implements SchemaPatchInterface
     /**
      * @var SalesSetupFactory
      */
-    protected $salesSetupFactory;
+    private $salesSetupFactory;
 
     /**
      * @var QuoteSetupFactory
@@ -38,7 +38,7 @@ class ChannelEngine implements SchemaPatchInterface
     /**
      * @var array|array[]
      */
-    private $orderLineAttributes;    
+    private $orderLineAttributes;
 
     /**
      * @param ModuleDataSetupInterface $setup
@@ -84,7 +84,7 @@ class ChannelEngine implements SchemaPatchInterface
                 'required' => false,
                 'label' => 'CE Order Line ID'
             ]
-        ];        
+        ];
     }
 
     /**
@@ -96,9 +96,9 @@ class ChannelEngine implements SchemaPatchInterface
 
         $conn = $this->setup->getConnection();
         $orderGridTable = $this->setup->getTable('sales_order_grid');
-        
+
         $salesSetup = $this->salesSetupFactory->create(['resourceName' => 'sales_setup', 'setup' => $this->setup]);
-        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);        
+        $quoteSetup = $this->quoteSetupFactory->create(['setup' => $this->setup]);
 
         foreach ($this->orderAttributes as $attr => $config) {
             $conn->addColumn($orderGridTable, $attr, [
@@ -120,6 +120,8 @@ class ChannelEngine implements SchemaPatchInterface
         $this->integrationManager->processIntegrationConfig(['ChannelEngine']);
 
         $this->setup->endSetup();
+
+        return $this;
     }
 
     /**

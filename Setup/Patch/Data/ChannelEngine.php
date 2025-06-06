@@ -16,7 +16,7 @@ class ChannelEngine implements DataPatchInterface
     /**
      * @var EavSetupFactory
      */
-    protected $eavSetupFactory;
+    private $eavSetupFactory;
     /**
      * @var array|array[]
      */
@@ -72,6 +72,8 @@ class ChannelEngine implements DataPatchInterface
         }
 
         $this->setup->endSetup();
+
+        return $this;
     }
 
     /**

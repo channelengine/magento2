@@ -1,6 +1,6 @@
 <?php namespace ChannelEngine\Magento2\Model;
 
-use Exception;
+use ChannelEngine\Magento2\NoAttributesException;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteIdMaskFactory;
@@ -89,7 +89,9 @@ class ChannelEngineApi implements ChannelEngineApiInterface
      */
     public function setOrderAttributes($orderId, $attributes = null)
     {
-        if(is_null($attributes)) throw new Exception('No attributes found');
+        if ($attributes === null) {
+            throw new NoAttributesException();
+        }
 
         $order = $this->orderRepo->get($orderId);
 
