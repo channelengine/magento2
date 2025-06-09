@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace ChannelEngine\Magento2\Model\Payment;
 
 use Magento\Authorization\Model\UserContextInterface;
@@ -22,7 +25,6 @@ use Magento\Payment\Model\MethodInterface;
 use Magento\Payment\Observer\AbstractDataAssignObserver;
 use Magento\Quote\Api\Data\CartInterface;
 use Magento\Quote\Api\Data\PaymentMethodInterface;
-use Magento\Quote\Model\Quote\Address\RateResult\MethodFactory;
 use Magento\Sales\Model\Order\Payment;
 use Magento\Directory\Helper\Data as DirectoryHelper;
 use Magento\Store\Model\ScopeInterface;
@@ -157,9 +159,6 @@ class ChannelEngine extends AbstractExtensibleModel implements
      */
     protected $logger;
 
-    /**
-     * @var MethodFactory
-     */
     private $_userContext;
 
     /**
@@ -544,8 +543,10 @@ class ChannelEngine extends AbstractExtensibleModel implements
         $paymentInfo = $this->getInfoInstance();
         if ($paymentInfo instanceof Payment) {
             $billingCountry = $paymentInfo->getOrder()->getBillingAddress()->getCountryId();
-        } else {
+        } elseif (method_exists($paymentInfo, 'getQuote')) {
             $billingCountry = $paymentInfo->getQuote()->getBillingAddress()->getCountryId();
+        } else {
+            $billingCountry = null;
         }
         $billingCountry = $billingCountry ?: $this->directory->getDefaultCountry();
 
@@ -729,11 +730,16 @@ class ChannelEngine extends AbstractExtensibleModel implements
     public function getConfigData($field, $storeId = null)
     {
         if ('order_place_redirect_url' === $field) {
-            return $this->getOrderPlaceRedirectUrl();
+            if (method_exists($this, 'getOrderPlaceRedirectUrl')) {
+                return $this->getOrderPlaceRedirectUrl();
+            }
+            return null;
         }
+
         if (null === $storeId) {
             $storeId = $this->getStore();
         }
+
         $path = 'payment/' . $this->getCode() . '/' . $field;
         return $this->_scopeConfig->getValue($path, ScopeInterface::SCOPE_STORE, $storeId);
     }

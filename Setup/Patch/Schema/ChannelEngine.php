@@ -1,4 +1,8 @@
-<?php namespace ChannelEngine\Magento2\Setup\Patch\Schema;
+<?php
+
+declare(strict_types=1);
+
+namespace ChannelEngine\Magento2\Setup\Patch\Schema;
 
 use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\ModuleDataSetupInterface;

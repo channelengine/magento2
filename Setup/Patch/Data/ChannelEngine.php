@@ -1,4 +1,8 @@
-<?php namespace ChannelEngine\Magento2\Setup\Patch\Data;
+<?php
+
+declare(strict_types=1);
+
+namespace ChannelEngine\Magento2\Setup\Patch\Data;
 
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\Patch\DataPatchInterface;

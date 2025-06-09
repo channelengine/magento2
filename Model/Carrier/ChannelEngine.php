@@ -1,4 +1,8 @@
-<?php namespace ChannelEngine\Magento2\Model\Carrier;
+<?php
+
+declare(strict_types=1);
+
+namespace ChannelEngine\Magento2\Model\Carrier;
 
 use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Shipping\Model\Carrier\CarrierInterface;

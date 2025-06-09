@@ -1,4 +1,8 @@
-<?php namespace ChannelEngine\Magento2\Model;
+<?php
+
+declare(strict_types=1);
+
+namespace ChannelEngine\Magento2\Model;
 
 use ChannelEngine\Magento2\NoAttributesException;
 use Magento\Sales\Api\OrderRepositoryInterface;
