@@ -1,9 +1,9 @@
 <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
     <test name="AdminOrderGridCeTypeOfFulfillmentVisibilityTest">
         <annotations>
-            <title value="Check if CE Channel grid column is displayed correctly"/>
-            <stories value="Check order grid"/>
-            <description value="CE Channel column is filled with data from ChannelEngine"/>
+            <title value="Check if CE Type of Fulfillment grid column is displayed correctly"/>
+            <stories value="Check order grid for CE Type of Fulfillment"/>
+            <description value="CE Type of Fulfillment contains data exported from ChannelEngine."/>
             <severity value="MINOR"/>
             <group value="ChannelEngineExtension"/>
         </annotations>

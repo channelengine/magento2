@@ -2,8 +2,8 @@
     <test name="AdminOrderGridCeChannelVisibilityTest">
         <annotations>
             <title value="Check if CE Channel grid column is displayed correctly"/>
-            <stories value="Check order grid"/>
-            <description value="CE Channel column is filled with data from ChannelEngine"/>
+            <stories value="Check order grid for CE Channel"/>
+            <description value="CE Channel contains data exported from ChannelEngine."/>
             <severity value="MINOR"/>
             <group value="ChannelEngineExtension"/>
         </annotations>
