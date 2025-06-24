@@ -6,6 +6,7 @@
             <description value="Check if product ce_updated_at attribute is the same as the default updated_at"/>
             <severity value="MINOR"/>
             <group value="ChannelEngineExtension"/>
+            <testCaseId value="CE-3" />
         </annotations>
 
         <before>

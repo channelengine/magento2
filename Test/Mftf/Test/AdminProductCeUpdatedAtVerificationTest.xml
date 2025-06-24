@@ -6,6 +6,7 @@
             <description value="Product should have a ce_updated_at custom attribute"/>
             <severity value="MINOR"/>
             <group value="ChannelEngineExtension"/>
+            <testCaseId value="CE-5" />
         </annotations>
 
         <before>

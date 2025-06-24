@@ -6,6 +6,7 @@
             <description value="CE Channel contains data exported from ChannelEngine."/>
             <severity value="MINOR"/>
             <group value="ChannelEngineExtension"/>
+            <testCaseId value="CE-2" />
         </annotations>
 
         <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
