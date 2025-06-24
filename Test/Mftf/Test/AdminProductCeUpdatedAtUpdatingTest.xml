@@ -6,7 +6,7 @@
             <description value="On product change, the ce_updated_at should be updated"/>
             <severity value="MINOR"/>
             <group value="ChannelEngineExtension"/>
-            <testCaseId value="CE-4" />
+            <testCaseId value="ChannelEngine-4" />
         </annotations>
 
         <before>
