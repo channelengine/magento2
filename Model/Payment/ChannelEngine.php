@@ -190,10 +190,10 @@ class ChannelEngine extends AbstractExtensibleModel implements
         ScopeConfigInterface $scopeConfig,
         Logger $logger,
         UserContextInterface $userContext,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = [],
-        DirectoryHelper $directory = null
+        ?DirectoryHelper $directory = null
     ) {
         parent::__construct(
             $context,
