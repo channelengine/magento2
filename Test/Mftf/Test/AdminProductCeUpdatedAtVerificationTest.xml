@@ -1,9 +1,9 @@
 <tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
-    <test name="AdminProductCeUpdatedVerificationTest">
+    <test name="AdminProductCeUpdatedAtVerificationTest">
         <annotations>
-            <title value="Check if product has ce_updated_at attribute"/>
-            <stories value="Check product"/>
-            <description value="Check if product has ce_updated_at attribute created by ChannelEngine"/>
+            <title value="Product should have ce_updated_at attribute"/>
+            <stories value="Check product to have ce_updated_at custom attribute"/>
+            <description value="Product should have a ce_updated_at custom attribute"/>
             <severity value="MINOR"/>
             <group value="ChannelEngineExtension"/>
         </annotations>
