@@ -782,7 +782,7 @@ class ChannelEngine extends AbstractExtensibleModel implements
      * @return bool
      * @deprecated 100.2.0
      */
-    public function isAvailable(CartInterface $quote = null)
+    public function isAvailable(?CartInterface $quote = null)
     {
         if (!$this->isActive($quote ? $quote->getStoreId() : null)) {
             return false;
