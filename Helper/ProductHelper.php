@@ -1,4 +1,8 @@
-<?php namespace ChannelEngine\Magento2\Helper;
+<?php
+
+declare(strict_types=1);
+
+namespace ChannelEngine\Magento2\Helper;
 
 use Magento\Framework\Stdlib\DateTime\DateTime;
 

@@ -1,0 +1,38 @@
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminProductCeUpdatedAtEqualsUpdatedAtTest">
+        <annotations>
+            <title value="ce_updated_at should be the same as updated_at"/>
+            <stories value="Check if product ce_updated_at attribute equals to updated_at"/>
+            <description value="Check if product ce_updated_at attribute is the same as the default updated_at"/>
+            <severity value="MINOR"/>
+            <group value="ChannelEngineExtension"/>
+            <testCaseId value="ChannelEngine-3" />
+        </annotations>
+
+        <before>
+            <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+            <createData entity="CeTestProduct" stepKey="testProduct" />
+        </before>
+
+        <comment userInput="Updating product after a delay..." stepKey="updatingProductComment" />
+        <actionGroup ref="AdminProductPageOpenByIdActionGroup" stepKey="goToTestProduct" after="updatingProductComment">
+            <argument name="productId" value="$testProduct.id$"/>
+        </actionGroup>
+        <wait stepKey="waitThreshold" time="11" after="goToTestProduct" />
+        <fillField selector="{{AdminProductFormSection.productName}}" userInput="UpdatedName" stepKey="fillProductName" after="waitThreshold"/>
+        <actionGroup ref="SaveProductFormActionGroup" stepKey="saveSimpleProduct" after="fillProductName"/>
+
+        <comment userInput="Getting updated product..." stepKey="gettingUpdatedProductComment" after="saveSimpleProduct" />
+        <getData entity="GetCeProduct" stepKey="getCeProductData" after="gettingUpdatedProductComment">
+            <requiredEntity createDataKey="testProduct" />
+        </getData>
+
+        <assertEquals stepKey="assertCeUpdatedAtEqualsUpdatedAt">
+            <actualResult type="string">$getCeProductData.updated_at$</actualResult>
+            <expectedResult type="string">$$getCeProductData.custom_attributes[ce_updated_at]$$</expectedResult>
+        </assertEquals>
+        <after>
+            <deleteData createDataKey="testProduct" stepKey="deleteTestProduct" />
+        </after>
+    </test>
+</tests>

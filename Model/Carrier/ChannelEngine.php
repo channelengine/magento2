@@ -1,4 +1,8 @@
-<?php namespace ChannelEngine\Magento2\Model\Carrier;
+<?php
+
+declare(strict_types=1);
+
+namespace ChannelEngine\Magento2\Model\Carrier;
 
 use Magento\Shipping\Model\Carrier\AbstractCarrier;
 use Magento\Shipping\Model\Carrier\CarrierInterface;
@@ -33,12 +37,12 @@ class ChannelEngine extends AbstractCarrier implements CarrierInterface
     /**
      * @var \Magento\Shipping\Model\Rate\ResultFactory
      */
-    protected $_rateResultFactory;
-    
+    private $_rateResultFactory;
+
     /**
      * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory
      */
-    protected $_rateMethodFactory;
+    private $_rateMethodFactory;
 
     /**
      * @var \Magento\Quote\Model\Quote\Address\RateResult\MethodFactory

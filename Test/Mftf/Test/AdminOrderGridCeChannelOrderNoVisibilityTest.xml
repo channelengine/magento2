@@ -1,0 +1,20 @@
+<tests xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Test/etc/testSchema.xsd">
+    <test name="AdminOrderGridCeChannelOrderNoVisibilityTest">
+        <annotations>
+            <title value="Check if CE Channel Order Number grid column is displayed correctly"/>
+            <stories value="Check order grid for CE Channel Order Number"/>
+            <description value="CE Channel Order Number contains data exported from ChannelEngine."/>
+            <severity value="MINOR"/>
+            <group value="ChannelEngineExtension"/>
+            <testCaseId value="ChannelEngine-1" />
+        </annotations>
+
+        <actionGroup ref="AdminLoginActionGroup" stepKey="loginAsAdmin"/>
+
+        <comment userInput="Opening orders page..." stepKey="openOrdersPageComment" />
+        <actionGroup ref="AdminOrdersPageOpenActionGroup" stepKey="goToOrders"/>
+
+        <comment userInput="Checking CE Channel Order No in the order grid..." stepKey="seeCeChannelOrderNoTextComment" />
+        <seeElement selector="{{OrderGridSection.ceChannelOrderNoSpan}}" stepKey="seeCeChannelOrderNoText" />
+    </test>
+</tests>

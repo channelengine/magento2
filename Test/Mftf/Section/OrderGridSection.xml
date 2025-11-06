@@ -1,0 +1,7 @@
+<sections xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:mftf:Page/etc/SectionObject.xsd">
+    <section name="OrderGridSection">
+        <element name="ceChannelSpan" type="text" selector="//span[contains(text(), 'CE Channel')]"/>
+        <element name="ceChannelOrderNoSpan" type="text" selector="//span[contains(text(), 'CE Channel Order No')]"/>
+        <element name="ceTypeOfFulfillmentSpan" type="text" selector="//span[contains(text(), 'CE Type of Fulfillment')]"/>
+    </section>
+</sections>

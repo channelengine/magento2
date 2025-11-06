@@ -1,4 +1,8 @@
-<?php namespace ChannelEngine\Magento2\Observer;
+<?php
+
+declare(strict_types=1);
+
+namespace ChannelEngine\Magento2\Observer;
 
 use Magento\Catalog\Model\Product\Action;
 use Magento\Framework\Event\Observer;

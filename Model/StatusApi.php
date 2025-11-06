@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ChannelEngine\Magento2\Model;
 
 use ChannelEngine\Magento2\Api\StatusApiInterface;
