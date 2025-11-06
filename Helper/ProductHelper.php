@@ -34,15 +34,19 @@ class ProductHelper
     {
         $existingCeUpdatedAt = $product->getCustomAttribute('ce_updated_at');
 
-        // If the attribute doesn't exist, treat it as not updated recently
-        if (!$existingCeUpdatedAt || !$existingCeUpdatedAt->getValue()) {
+        // Try to read the attribute from the product data first, then fall back to the custom attribute object.
+        $lastUpdatedAt = $product->getData('ce_updated_at');
+        if (empty($lastUpdatedAt) && $existingCeUpdatedAt && $existingCeUpdatedAt->getValue()) {
+            $lastUpdatedAt = $existingCeUpdatedAt->getValue();
+        }
+
+        // If we still don't have a value, treat it as not updated recently
+        if (empty($lastUpdatedAt)) {
             return false;
         }
 
-        $lastUpdatedAt = $existingCeUpdatedAt->getValue();
         $currentTime = $this->dateTime->gmtTimestamp();
-
-        $productUpdatedAtTime = strtotime($lastUpdatedAt);
+        $productUpdatedAtTime = strtotime((string) $lastUpdatedAt);
 
         if ($productUpdatedAtTime === false) {
             return false;
