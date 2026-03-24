@@ -60,6 +60,9 @@ class StockItemObserver implements ObserverInterface
             $productId = $stockItem->getProductId();
             $product = $this->productRepository->getById($productId);
 
+            // NOTE: If you experience issues with multiselect attribute values not saving properly for products,
+            // try commenting out the early return below. This check prevents frequent updates but may interfere
+            // with multiselect value persistence in some configurations.
             if ($this->productHelper->wasUpdatedRecently($product)) {
                 return;
             }
