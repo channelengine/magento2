@@ -5,7 +5,7 @@
     <preference for="ChannelEngine\Magento2\Api\StatusApiInterface" type="ChannelEngine\Magento2\Model\StatusApi"/>
     <virtualType name="Magento\Sales\Model\ResourceModel\Order\Grid" type="Magento\Sales\Model\ResourceModel\Grid">
         <arguments>
-            <argument name="columns">
+            <argument name="columns" xsi:type="array">
                 <item name="ce_channel_name" xsi:type="string">sales_order.ce_channel_name</item>
                 <item name="ce_channel_order_no" xsi:type="string">sales_order.ce_channel_order_no</item>
             </argument>
