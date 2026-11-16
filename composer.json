@@ -9,7 +9,7 @@
         }
     ],
     "license": "OSL-3.0",
-    "version": "1.4.0",
+    "version": "1.4.2",
     "minimum-stability": "stable",
     "require": {
         "php": ">=7.1",
