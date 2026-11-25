@@ -71,12 +71,24 @@ class ChannelEngineApi implements ChannelEngineApiInterface
 
                 $item->setCustomPrice($price);
                 $item->setOriginalCustomPrice($price);
+
+                if (array_key_exists('tax_rate', $attrs)) {
+                    $item->setData('ce_tax_rate', $attrs['tax_rate']);
+                }
             }
         }
 
         $shippingPrice = $prices['shipping_price'];
 
         $quote->setExtShippingInfo($this->_serializer->serialize($shippingPrice));
+
+        if (is_array($prices) && array_key_exists('shipping_tax_rate', $prices)) {
+            $quote->setData('ce_shipping_tax_rate', $prices['shipping_tax_rate']);
+        }
+
+        if (is_array($prices) && array_key_exists('price_includes_tax', $prices)) {
+            $quote->setData('ce_price_includes_tax', (int) (bool) $prices['price_includes_tax']);
+        }
 
         $quote->save();
 
